@@ -1,0 +1,45 @@
+select
+UNIDADE_ORIGEM,
+DATA_REF,
+count(*)total_pedidos,
+sum(decode(registros_status,0,0,1))total_registros_status,
+round(((sum(decode(registros_status,0,0,1))/count(*)) * 100),2)percentual
+from
+(SELECT
+CASE
+    WHEN PED_RX.CD_SET_EXA IN (24,4,5,7,8,30,31,32) THEN 'INC IMAGEM MATRIZ'
+    WHEN PED_RX.CD_SET_EXA IN (37,38,39,40,41,42) THEN 'INC IMAGEM BARIGUI'
+    ELSE TO_CHAR(PED_RX.CD_SET_EXA)
+END UNIDADE_ORIGEM,    
+  TO_CHAR(PED_RX.HR_PEDIDO,'MM/YYYY') DATA_REF,
+  DECODE(ATENDIME.TP_ATENDIMENTO,'U','Emergência','I','Internado','E','Externo')tipo_atendimento,
+  PACIENTE.CD_PACIENTE,
+  ATENDIME.cd_atendimento,
+  ITPED_RX.CD_PED_RX,
+  PACIENTE.nm_paciente,
+  EXA_RX.CD_EXA_RX,
+  EXA_RX.DS_EXA_RX,
+(select count(*)
+FROM dbamv.PW_DOCUMENTO_CLINICO m, dbamv.PW_EDITOR_CLINICO n, editor.EDITOR_REGISTRO o, editor.EDITOR_REGISTRO_CAMPO p, editor.EDITOR_CAMPO q
+where n.cd_documento_clinico = m.cd_documento_clinico
+AND n.cd_editor_registro = o.cd_registro
+and p.cd_registro = o.cd_registro
+AND p.cd_campo = editor.q.cd_campo
+and n.cd_documento = 61
+and q.ds_identificador IN ('EXAME')
+and (tp_status = 'ASSINADO' or tp_status = 'FECHADO')
+and m.cd_atendimento = ATENDIME.CD_ATENDIMENTO	
+and to_number(REGEXP_SUBSTR(p.lo_conteudo, '^[0-9]+')) = ITPED_RX.CD_ITPED_RX)registros_status
+FROM
+  DBAMV.PED_RX
+  INNER JOIN ITPED_RX ON PED_RX.CD_PED_RX = ITPED_RX.CD_PED_RX
+  INNER JOIN ATENDIME ON PED_RX.CD_ATENDIMENTO = ATENDIME.CD_ATENDIMENTO
+  INNER JOIN PACIENTE ON PACIENTE.CD_PACIENTE = ATENDIME.CD_PACIENTE
+  INNER JOIN EXA_RX ON ITPED_RX.CD_EXA_RX = EXA_RX.CD_EXA_RX
+  LEFT JOIN RECURSO ON RECURSO.CD_RECURSO = ITPED_RX.CD_RECURSO
+  LEFT JOIN PRESTADOR ON ITPED_RX.CD_PRESTADOR = PRESTADOR.CD_PRESTADOR
+WHERE PED_RX.HR_PEDIDO BETWEEN :DT_INICIAL AND :DT_FINAL
+AND EXA_RX.CD_EXA_RX IN (select CD_EXA_RX from EXA_SET where EXA_SET.CD_EXA_RX = EXA_RX.CD_EXA_RX AND CD_SET_EXA IN (24,4,5,7,8,30,31,32,37,38,39,40,41,42))
+AND EXA_RX.CD_EXA_RX NOT IN (1050,1051))
+WHERE UNIDADE_ORIGEM IN ('INC IMAGEM MATRIZ','INC IMAGEM BARIGUI')
+group by UNIDADE_ORIGEM,DATA_REF

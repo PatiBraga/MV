@@ -1,0 +1,17 @@
+INSERT INTO USUARIO_UNID_INT x
+SELECT NULL,
+'MARCELO.POLLI',
+CD_SETOR,
+'S',
+'S',
+'S',
+'S',
+'S',
+'S',
+'S',
+'S',
+'S',
+'S',
+'S'
+from SETOR
+WHERE SN_ATIVO = 'S'

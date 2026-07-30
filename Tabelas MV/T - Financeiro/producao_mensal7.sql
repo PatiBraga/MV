@@ -1,0 +1,37 @@
+SELECT   set_exa.cd_setor
+
+            ,COUNT ( * ) qtd
+
+        FROM dbamv.ped_rx
+
+            ,dbamv.itped_rx
+
+            ,dbamv.set_exa
+
+            ,dbamv.setor
+
+     --       ,dbamv.setor_item si
+
+       WHERE --Decode(setor.tp_oripedido_ffch,
+             --       'S', trunc(ped_rx.dt_pedido, 'MM'),
+              --       trunc(itped_rx.dt_realizado, 'MM')) = to_date(p_dt_comp, 'mm/yyyy')
+
+         AND itped_rx.cd_ped_rx = ped_rx.cd_ped_rx
+
+         AND ped_rx.cd_set_exa = set_exa.cd_set_exa
+
+         AND set_exa.cd_setor = setor.cd_setor
+
+     --    AND (setor.cd_multi_empresa = p_cd_multi_empresa OR
+
+       --      (p_regra_csc = 'S' AND setor.cd_multi_empresa IN (select cfc.cd_multi_empresa_destino FROM dbamv.config_ffch_csc cfc
+
+   --      WHERE cfc.cd_multi_empresa_origem = p_cd_multi_empresa)))
+
+      --   AND setor.cd_setor = si.cd_setor
+
+      --   AND si.cd_item_producao = pcd_item_producao
+
+    --     AND setor.sn_aceita_lancamento = 'S'
+
+    GROUP BY set_exa.cd_setor

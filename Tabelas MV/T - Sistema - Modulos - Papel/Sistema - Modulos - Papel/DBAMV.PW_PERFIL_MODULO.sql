@@ -1,0 +1,1 @@
+SELECT * FROM pw_perfil_modulo;

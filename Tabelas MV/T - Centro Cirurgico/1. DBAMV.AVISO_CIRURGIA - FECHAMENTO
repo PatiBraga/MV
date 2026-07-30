@@ -1,0 +1,102 @@
+SELECT *
+FROM dbamv.aviso_cirurgia
+WHERE cd_aviso_cirurgia IN  ('59915', '59894', '59028', '59027')
+-- ORDER BY cd_aviso_cirurgia DESC
+
+/*
+UPDATE dbamv.aviso_cirurgia
+SET sn_confirmado = 'S'
+WHERE cd_aviso_cirurgia = '59915' AND cd_paciente = '335222' AND  cd_atendimento = '1104672'
+
+
+-- Quando for rodar tp_situacao é necessário disabilitar as triggers
+
+ALTER TRIGGER DBAMV.TRG_AVISO_CIRURGIA_EVOLUCAO DISABLE;
+ALTER TRIGGER DBAMV.TRG_AVI_CIR_A_UPD DISABLE;
+
+UPDATE dbamv.aviso_cirurgia
+SET tp_situacao = 'R'
+WHERE cd_aviso_cirurgia = '59894' AND cd_paciente = '335248' AND  cd_atendimento = '1104977'
+
+ALTER TRIGGER DBAMV.TRG_AVISO_CIRURGIA_EVOLUCAO enable;
+ALTER TRIGGER DBAMV.TRG_AVI_CIR_A_UPD enable;
+*/
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT *
+FROM dbamv.aviso_cirurgia
+WHERE cd_aviso_cirurgia IN  ('59915', '59894', '59028', '59027')
+-- ORDER BY cd_aviso_cirurgia DESC
+
+
+- Paciente: Celso Pereira Neves   ID 325008
+- Atendimento: 1101067
+- Aviso: 59544
+
+SELECT *
+FROM dbamv.aviso_cirurgia
+WHERE cd_aviso_cirurgia = '59544'
+-- ORDER BY cd_aviso_cirurgia DESC
+
+
+
+UPDATE dbamv.aviso_cirurgia
+SET sn_confirmado = 'S'
+WHERE cd_aviso_cirurgia = '59544' AND cd_paciente = '325008' AND  cd_atendimento = '1101067'
+
+
+-- Quando for rodar tp_situacao é necessário disabilitar as triggers
+
+ALTER TRIGGER DBAMV.TRG_AVISO_CIRURGIA_EVOLUCAO DISABLE;
+ALTER TRIGGER DBAMV.TRG_AVI_CIR_A_UPD DISABLE;
+
+UPDATE dbamv.aviso_cirurgia
+SET tp_situacao = 'R'
+WHERE cd_aviso_cirurgia = '59544' AND cd_paciente = '325008' AND  cd_atendimento = '1101067'
+
+ALTER TRIGGER DBAMV.TRG_AVISO_CIRURGIA_EVOLUCAO enable;
+ALTER TRIGGER DBAMV.TRG_AVI_CIR_A_UPD enable;
+
+
+----------------------------------------------------------------------------------
+/*
+
+
+-- Updates separados 
+
+-- Update 1
+UPDATE dbamv.aviso_cirurgia
+SET sn_confirmado = 'S'
+WHERE cd_aviso_cirurgia = '59915'
+  AND cd_paciente = '335222'
+  AND cd_atendimento = '1104672';
+
+
+-- Update 2
+UPDATE dbamv.aviso_cirurgia
+SET tp_situacao = 'R'
+WHERE cd_aviso_cirurgia = '59894'
+  AND cd_paciente = '335248'
+  AND cd_atendimento = '1104977';
+
+COMMIT;
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Os dois updates juntos
+
+UPDATE dbamv.aviso_cirurgia
+SET
+  sn_confirmado = CASE
+    WHEN cd_aviso_cirurgia = '59915' AND cd_paciente = '335222' AND cd_atendimento = '1104672' THEN 'S'
+    ELSE sn_confirmado
+  END,
+  tp_situacao = CASE
+    WHEN cd_aviso_cirurgia = '59894' AND cd_paciente = '335248' AND cd_atendimento = '1104977' THEN 'R'
+    ELSE tp_situacao
+  END
+WHERE (cd_aviso_cirurgia = '59915' AND cd_paciente = '335222' AND cd_atendimento = '1104672')
+   OR (cd_aviso_cirurgia = '59894' AND cd_paciente = '335248' AND cd_atendimento = '1104977');
+
+COMMIT;

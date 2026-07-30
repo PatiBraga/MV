@@ -1,0 +1,13 @@
+-- PW_DOCUMENTO_CLINICO - FECHAR DOC. ABERTO
+
+pw_documento_clinico
+tp_status = 'ABERTO'
+/
+
+select * from DBAMV.PW_DOCUMENTO_CLINICO
+where cd_paciente = 95279 and dh_fechamento is null and cd_objeto = 142 and tp_status = 'ABERTO'
+/
+
+UPDATE PW_DOCUMENTO_CLINICO SET TP_STATUS = 'FECHADO' WHERE CD_DOCUMENTO_CLINICO = 9364637 --PEGA O CÛDIGO DO DOCUMENTO CLINICO  DA CONSULTA ANTERIOR
+/
+

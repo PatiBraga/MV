@@ -1,0 +1,45 @@
+-- tempo de espera
+SELECT ATENDIME.CD_ATENDIMENTO,
+              PACIENTE.NM_PACIENTE,
+              (SELECT PA.NM_SOCIAL_PACIENTE
+          		FROM DBAMV.PACIENTE PA
+          		WHERE PA.CD_PACIENTE = PACIENTE.CD_PACIENTE
+            	  AND NVL(PA.SN_UTILIZA_NOME_SOCIAL, 'N') = 'S') NM_SOCIAL_PACIENTE,
+              To_Number(Substr(ATENDIME.CD_PRESTADOR, 1, 12)) CD_PRESTADOR, -- Pda 471322
+              PRESTADOR.NM_PRESTADOR,
+              DECODE(ATENDIME.TP_ATENDIMENTO, 'A', ATENDIME.CD_SER_DIS, ATENDIME.CD_SERVICO) CD_SERVICO, -- PDA 288405 LRSJ
+              DECODE(ATENDIME.TP_ATENDIMENTO, 'A', SER_DIS.DS_SER_DIS, SERVICO.DS_SERVICO) DS_SERVICO, -- PDA 288405 LRSJ
+              ATENDIME.CD_CONVENIO,
+              CONVENIO.NM_CONVENIO,
+              to_char(ATENDIME.DT_CHEGADA_PACIENTE, 'dd/mm/yyyy HH24:MI') DT_CHEGADA_PACIENTE,
+              TO_CHAR(HR_ATENDIMENTO, 'HH24:MI') HR_ATENDIMENTO,
+              to_char(ATENDIME.DT_ATENDIMENTO, 'dd/mm/yyyy') || ' ' || TO_CHAR(HR_ATENDIMENTO, 'HH24:MI') DT_ATENDIMENTO,
+             to_char(to_date($P{P_DT_INICIAL}, 'dd/mm/yyyy hh24:mi:ss') + (
+             dbamv.fnc_mv_recupera_data_hora(dt_atendimento, hr_atendimento) -
+             dbamv.fnc_mv_recupera_data_hora(dt_atendimento,
+             nvl(dt_chegada_paciente,hr_atendimento))), 'hh24:mi:ss') TEMPO_TRANSCORRIDO
+   FROM DBAMV.ATENDIME,
+              DBAMV.PRESTADOR,
+              DBAMV.ORI_ATE,
+              DBAMV.SERVICO,
+              DBAMV.PACIENTE,
+              DBAMV.CONVENIO,
+              DBAMV.SER_DIS -- PDA 288405 LRSJ
+WHERE ATENDIME.DT_CHEGADA_PACIENTE IS NOT NULL
+      AND ATENDIME.CD_PRESTADOR = PRESTADOR.CD_PRESTADOR
+      AND ATENDIME.CD_ORI_ATE   = ORI_ATE.CD_ORI_ATE
+      AND ATENDIME.CD_SERVICO   = SERVICO.CD_SERVICO(+)
+      AND ATENDIME.CD_SER_DIS   = SER_DIS.CD_SER_DIS(+) -- PDA 288405 LRSJ
+      AND ATENDIME.CD_PACIENTE  = PACIENTE.CD_PACIENTE
+      AND ATENDIME.CD_CONVENIO  = CONVENIO.CD_CONVENIO
+      AND ATENDIME.DT_ATENDIMENTO BETWEEN to_date(to_char($P{P_DT_INICIAL}, 'dd/mm/yyyy') || ' 00:00:00', 'dd/mm/yyyy HH24:MI:SS') AND
+     								      to_date(to_char($P{P_DT_FINAL}, 'dd/mm/yyyy') || ' 23:59:59', 'dd/mm/yyyy HH24:MI:SS')
+      AND  ATENDIME.CD_MULTI_EMPRESA = $P{P_CD_MULTI_EMPRESA}  /PDA 205491/
+$P!{COND_SER_DIS} -- PDA 288405 LRSJ
+$P!{COND_ORIGEM}
+$P!{COND_SERVICO}
+$P!{COND_PRESTADOR}
+$P!{COND_CONVENIO}
+$P!{COND_TP_ATENDIMENTO}
+$P!{CF_TP_TRANSCORRIDO}
+ORDER BY ATENDIME.CD_ATENDIMENTO

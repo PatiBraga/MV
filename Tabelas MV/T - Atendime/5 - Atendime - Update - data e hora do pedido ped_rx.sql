@@ -1,0 +1,42 @@
+-- Alterar a data de atendimento
+
+select *
+  from atendime
+where cd_atendimento = 1121566;
+
+
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO DISABLE;
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO DISABLE;
+
+
+UPDATE atendime
+SET
+  dt_atendimento  = TO_TIMESTAMP('15/01/2026 13:19', 'DD/MM/YYYY HH24:MI'),
+  hr_atendimento  = TO_TIMESTAMP('15/01/2026 13:19', 'DD/MM/YYYY HH24:MI')
+WHERE cd_atendimento = 1121566;
+
+
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO ENABLE;
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO ENABLE;
+
+
+-- Update - data e hora do pedido ped_rx
+
+SELECT * FROM ped_rx
+where cd_atendimento = 1121566;
+
+
+UPDATE ped_rx
+SET
+  dt_pedido  = TO_TIMESTAMP('15/01/2026 13:19', 'DD/MM/YYYY HH24:MI'),
+  hr_pedido  = TO_TIMESTAMP('15/01/2026 13:19', 'DD/MM/YYYY HH24:MI')
+WHERE cd_atendimento = 1121566;
+
+
+
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO enable;
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO enable;
+
+
+---------------------------------------------------------------------------------
+

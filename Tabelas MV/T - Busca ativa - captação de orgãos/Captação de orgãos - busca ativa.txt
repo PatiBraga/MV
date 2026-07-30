@@ -1,0 +1,11 @@
+A criação de avisos para captação de órgãos é permitida apenas quando o atendimento é do tipo Busca Ativa na tela de cadastro de cirurgia. 
+Dessa forma, ao tentar realizar esse cadastro por meio das telas de cirurgias eletivas, como O_AGENDA e M_AVISO_CIRURGIA, 
+o sistema apresentará uma mensagem de validação, impedindo a inclusão.
+
+Diante disso, orientamos que a criação dos avisos relacionados à captação de órgãos seja realizada pela tela M_CADASTRO_CIRURGIA, 
+que é a tela adequada para esse tipo de registro no sistema.
+
+Pegar o atendimento de busca ativa, acessar a tela de Cadastro de Cirurgia (M_CADASTRO_CIRURGIA) e proceder com a criação do aviso.
+Essa tela tem como finalidade cadastrar a cirurgia do paciente diretamente, sem a necessidade de registro prévio do aviso de cirurgia ou de agendamento. 
+Essa tela é geralmente utilizada para efetuar o cadastro de cirurgias de emergência que já foram realizadas, confirmando-as automaticamente. 
+Quando acessada pelo menu de Consultas, a tela é apresentada em modo de pesquisa, permitindo a consulta aos registros já cadastrados.

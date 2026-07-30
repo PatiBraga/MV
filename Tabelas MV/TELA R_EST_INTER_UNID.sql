@@ -1,0 +1,34 @@
+-- TELA R_EST_INTER_UNID
+
+SELECT CD_UNID_INT
+              ,NVL(DS_UNID_INT,'HOME CARE') DS_UNID_INT
+              ,SUM(INTERNACOES)   Internacoes
+FROM (  SELECT UNID_INT.CD_UNID_INT
+                            ,UNID_INT.DS_UNID_INT
+                            ,0            Internacoes
+              FROM DBAMV.UNID_INT
+              Where 1 = 1
+--              $P!{CF_UNID_INT}
+
+              UNION ALL
+
+              SELECT  UNID_INT.CD_UNID_INT
+                             ,UNID_INT.DS_UNID_INT
+                             ,COUNT(*)     Internacoes
+              FROM      DBAMV.ATENDIME
+                             ,DBAMV.LEITO
+                             ,DBAMV.UNID_INT
+                             ,DBAMV.CONVENIO
+              WHERE  ATENDIME.TP_ATENDIMENTO in ('I', 'H')
+              AND        TRUNC(ATENDIME.DT_ATENDIMENTO)  BETWEEN '10/06/2026'  AND  '10/06/2026'
+              AND        ATENDIME.CD_LEITO  =  LEITO.CD_LEITO(+)
+              AND        LEITO.CD_UNID_INT = UNID_INT.CD_UNID_INT(+)
+              AND        ATENDIME.CD_ATENDIMENTO_PAI IS NULL
+              AND        ATENDIME.CD_CONVENIO = CONVENIO.CD_CONVENIO
+               AND ATENDIME.CD_MULTI_EMPRESA = 1  /PDA 205491/
+
+              GROUP  BY UNID_INT.CD_UNID_INT,
+                                   UNID_INT.DS_UNID_INT  )
+GROUP BY  CD_UNID_INT
+                    ,DS_UNID_INT
+ORDER  BY DS_UNID_INT

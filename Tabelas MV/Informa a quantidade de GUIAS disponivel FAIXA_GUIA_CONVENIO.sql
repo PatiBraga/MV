@@ -1,0 +1,39 @@
+-- Informa a quantidade de GUIAS disponivel FAIXA_GUIA_CONVENIO
+SELECT CD_FAIXA_GUIA,
+       CD_MULTI_EMPRESA,
+       CD_CONVENIO,
+       DT_VIGENCIA,
+       NR_INICIAL,
+       NR_FINAL,
+       CASE
+         WHEN RNK <> 1 THEN
+          0
+         ELSE
+          QTD_TOTAL - QTD_UTILIZADA
+       END AS GUIAS_RESTANTES
+
+  FROM (SELECT FGC.CD_FAIXA_GUIA,
+               FGC.CD_CONVENIO,
+               FGC.CD_MULTI_EMPRESA,
+               FGC.DT_VIGENCIA,
+               FGC.NR_INICIAL,
+               FGC.NR_FINAL,
+               (FGC.NR_FINAL - FGC.NR_INICIAL) + 1AS QTD_TOTAL,
+               (SELECT COUNT(IFG.NR_GUIA)
+                  FROM DBAMV.ITEM_FAIXA_GUIA_CONVENIO IFG
+                 WHERE IFG.CD_FAIXA_GUIA = FGC.CD_FAIXA_GUIA
+                   AND IFG.NR_GUIA IS NOT NULL) AS QTD_UTILIZADA,
+               RANK() OVER(PARTITION BY FGC.CD_CONVENIO, FGC.CD_MULTI_EMPRESA ORDER BY FGC.DT_VIGENCIA DESC, FGC.NR_FINAL DESC) AS RNK
+
+          FROM DBAMV.FAIXA_GUIA_CONVENIO FGC
+
+        --WHERE FGC.CD_FAIXA_GUIA = 700
+
+         GROUP BY FGC.CD_FAIXA_GUIA,
+                  FGC.CD_CONVENIO,
+                  FGC.CD_MULTI_EMPRESA,
+                  FGC.DT_VIGENCIA,
+                  FGC.NR_INICIAL,
+                  FGC.NR_FINAL,
+                  (FGC.NR_FINAL - FGC.NR_INICIAL) + 1)
+ ORDER BY NR_FINAL DESC

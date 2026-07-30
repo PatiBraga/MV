@@ -1,0 +1,7 @@
+ SELECT *
+FROM CON_REC
+WHERE cd_reg_fat =  '108865'
+ORDER BY dt_emissao DESC
+FETCH FIRST 10 ROWS ONLY
+ ;
+

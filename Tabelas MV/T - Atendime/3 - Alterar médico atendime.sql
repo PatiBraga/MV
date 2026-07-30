@@ -1,0 +1,45 @@
+-- SELECT ATENDIME
+SELECT cd_atendimento, cd_paciente, cd_prestador
+FROM atendime
+WHERE cd_atendimento = 1177555
+  AND cd_paciente    = 173359;
+
+
+-- UPDATE ALTERAR MÉDICO ATENDIME
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO DISABLE;
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO DISABLE;
+
+UPDATE atendime
+SET    cd_prestador  = 3598
+WHERE  cd_atendimento = 1177555
+  AND  cd_paciente    = 173359;
+
+COMMIT;
+
+
+-- Confirmação após o UPDATE
+SELECT cd_atendimento, cd_paciente, cd_prestador
+FROM atendime
+WHERE cd_atendimento = 1177555
+  AND cd_paciente    = 173359;
+
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO ENABLE;
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO ENABLE;
+
+COMMIT;
+
+-- SELECT de Validação — Status das Triggers
+SELECT
+    OWNER,
+    TRIGGER_NAME,
+    STATUS,
+    TRIGGER_TYPE,
+    TRIGGERING_EVENT,
+    TABLE_NAME
+FROM ALL_TRIGGERS
+WHERE OWNER        = 'MVINTEGRA'
+  AND TRIGGER_NAME IN (
+      'TRG_IMVW_SAI_ATENDIMENTO',
+      'TRG_IMVW_OUT_ATENDIMENTO'
+  )
+ORDER BY TRIGGER_NAME;

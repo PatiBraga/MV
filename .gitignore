@@ -1,0 +1,14 @@
+# Não versionar vídeos grandes
+*.mp4
+*.avi
+*.mkv
+*.mov
+
+# Pastas que possam ter vídeos ou arquivos pesados
+Tabelas MV/T - Financeiro/caixa/
+Tabelas MV/T - Editores/
+
+# Logs e temporários
+*.log
+tmp/
+temp/

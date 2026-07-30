@@ -1,0 +1,61 @@
+
+SELECT
+    s.sid,
+    s.serial#,
+    s.username,
+    s.osuser,
+    s.machine,
+    s.program,
+    s.status,
+    o.object_name,
+    l.locked_mode,
+    s.logon_time,
+    q.sql_text
+FROM
+    v$locked_object l
+    JOIN all_objects o ON o.object_id = l.object_id
+    JOIN v$session s ON s.sid = l.session_id
+    LEFT JOIN v$sql q ON q.sql_id = s.sql_id
+WHERE
+    o.object_name = 'IT_AGENDA_CENTRAL'
+ORDER BY s.logon_time;
+
+
+
+
+ALTER SYSTEM KILL SESSION '2343,4639' IMMEDIATE;
+
+
+ALTER SYSTEM KILL SESSION '888,12920' IMMEDIATE;
+
+
+ALTER SYSTEM KILL SESSION '887,33611' IMMEDIATE;
+
+
+ALTER SYSTEM KILL SESSION '215,6646' IMMEDIATE;
+
+
+ALTER SYSTEM KILL SESSION '1680,62710' IMMEDIATE;
+
+
+ALTER SYSTEM KILL SESSION '927,54362' IMMEDIATE;
+
+
+ALTER SYSTEM KILL SESSION '842,31424' IMMEDIATE;
+
+
+ALTER SYSTEM KILL SESSION '164,52342' IMMEDIATE;
+
+ALTER SYSTEM KILL SESSION '1668,14844' IMMEDIATE;
+
+ALTER SYSTEM KILL SESSION '2398,43696' IMMEDIATE;
+
+ALTER SYSTEM KILL SESSION '969,252' IMMEDIATE;
+
+ALTER SYSTEM KILL SESSION '2472,765' IMMEDIATE;
+
+
+
+ALTER SYSTEM KILL SESSION '922,15020' IMMEDIATE;
+
+

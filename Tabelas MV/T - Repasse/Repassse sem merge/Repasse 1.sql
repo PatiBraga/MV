@@ -1,0 +1,226 @@
+/* INCLUIR PAINEL INC IMAGEM
+
+-- BANCO CENTRAL - COD. 78
+41001036 R$ 203,85
+
+
+-- PARTICULAR - COD. 40 -- incluir sem valor 
+41101359 R$ 450,00
+
+
+-- HOSPITAL UNIVERSIDADE EVANGELICO MACKENZIE - COD. 81 
+41001036 R$ 188,75
+
+
+-- BRADESCO - COD. 10
+41001281 R$ 299,96
+Validar: 
+82   BRADESCO OPERADORA DE PLANOS
+10   BRADESCO SAUDE
+
+
+-- MEDISERVICE - COD. 16
+41001036 R$ 218,95
+
+
+-- PLADISA - COD. 79 
+41001028 R$ 192,31
+
+
+-- ITAU - COD. 28 - incluir não tem 
+40901181 R$ 64,67
+*/
+
+-----------------------------------------------------------------------
+
+-- Validar tabela e entender o processo 
+
+SELECT * FROM REPASSE_IMAGEM_SW
+
+SELECT cd_convenio, nm_convenio, tp_convenio
+FROM CONVENIO
+ORDER BY nm_convenio; 
+
+SELECT cd_convenio, nm_convenio, tp_convenio
+FROM CONVENIO
+WHERE nm_convenio LIKE '%ITAU%'
+ORDER BY cd_convenio; 
+
+SELECT * FROM REPASSE_IMAGEM_SW WHERE TUSS = 40901181 AND CONVENIO = 78;
+
+SELECT * FROM CONVENIO WHERE NM_CONVENIO LIKE '%BANCO%';
+
+
+-- Validar Planos \ Convenio
+SELECT * FROM CON_PLA
+ORDER BY cd_convenio;
+
+
+-- Realizar insert 
+
+INSERT ALL
+INTO REPASSE_IMAGEM_SW (TUSS, CONVENIO, VL_TOTAL) VALUES ('41001036', '78', '203,85')
+INTO REPASSE_IMAGEM_SW (TUSS, CONVENIO, VL_TOTAL) VALUES ('41101359', '40', '450,00')
+INTO REPASSE_IMAGEM_SW (TUSS, CONVENIO, VL_TOTAL) VALUES ('41001036', '81', '188,75')
+INTO REPASSE_IMAGEM_SW (TUSS, CONVENIO, VL_TOTAL) VALUES ('41001281', '10', '299,96')
+INTO REPASSE_IMAGEM_SW (TUSS, CONVENIO, VL_TOTAL) VALUES ('41001281', '82', '299,96')
+INTO REPASSE_IMAGEM_SW (TUSS, CONVENIO, VL_TOTAL) VALUES ('41001036', '16', '218,95')
+INTO REPASSE_IMAGEM_SW (TUSS, CONVENIO, VL_TOTAL) VALUES ('41001028', '79', '192,31')
+INTO REPASSE_IMAGEM_SW (TUSS, CONVENIO, VL_TOTAL) VALUES ('40901211', '28', '64,67')
+SELECT * FROM dual;
+
+
+-- Validar se as informações foram incluidas 
+SELECT * FROM REPASSE_IMAGEM_SW WHERE TUSS = 41101316 AND CONVENIO = 78;
+
+SELECT * 
+FROM REPASSE_IMAGEM_SW
+WHERE (TUSS = '41001036' AND CONVENIO = '78')
+OR (TUSS = '41101359' AND CONVENIO = '40')
+OR (TUSS = '41001036' AND CONVENIO = '81')
+OR (TUSS = '41001281' AND CONVENIO = '10')
+OR (TUSS = '41001036' AND CONVENIO = '16')
+OR (TUSS = '41001028' AND CONVENIO = '79')
+OR (TUSS = '40901211' AND CONVENIO = '28');
+
+
+-- Realizar alteração 
+UPDATE REPASSE_IMAGEM_SW
+SET VL_TOTAL = 218,95
+WHERE TUSS = 41101359
+AND CONVENIO = 78;
+
+
+
+SELECT * FROM REPASSE_IMAGEM_SW WHERE TUSS = 41101316 AND CONVENIO = 78;
+
+
+Tabela - REPASSE_IMAGEM_SW 
+
+Colunas TUSS  41101316, 40901181, 40901173, 40901130, 40901122
+
+CONVENIO 78
+Valor '82,76', '78,92', '94', '131,07', '82,07', '79'
+
+
+
+SELECT * FROM CONVENIO WHERE NM_CONVENIO LIKE '%BANCO%';
+
+
+-- DELETE NOS CONVENIOS COM VALORES DUPLICADOS
+
+SELECT * FROM REPASSE_IMAGEM_SW
+
+SELECT TUSS, CONVENIO, COUNT(*) AS TOTAL
+FROM REPASSE_IMAGEM_SW
+GROUP BY TUSS, CONVENIO
+ORDER BY TOTAL DESC;
+
+
+SELECT * FROM REPASSE_IMAGEM_SW WHERE TUSS = 40901211 AND CONVENIO = 28;
+
+SELECT *
+FROM REPASSE_IMAGEM_SW                       
+    WHERE tuss = 40901211
+    AND convenio = 28
+AND vl_total = '53,13';
+
+
+DELETE FROM REPASSE_IMAGEM_SW
+    WHERE tuss = 40901211
+    AND convenio = 28
+AND vl_total = '53,13';
+
+
+SELECT * FROM REPASSE_IMAGEM_SW WHERE TUSS = 41001036 AND CONVENIO = 16;
+
+SELECT *
+    FROM REPASSE_IMAGEM_SW
+    WHERE tuss = 41001036
+    AND convenio = 16
+AND vl_total = 0;
+
+
+DELETE FROM REPASSE_IMAGEM_SW
+    WHERE tuss = 41001036
+    AND convenio = 16
+AND vl_total = 0;
+
+
+-- JOIN
+
+-- SELECT TABELA REPASSE_IMAGEM_SW
+SELECT tuss, convenio, vl_total 
+FROM REPASSE_IMAGEM_SW
+
+-- SELECT TABELA CONVENIO
+SELECT cd_convenio,  nm_convenio
+FROM CONVENIO
+
+-- JOIN DA TABELA REPASSE_IMAGEM_SW E CONVENIO - VERIFICAR NOME DOS CONVENIOS COM SEUS RESPECTIVOS CÓDIGOS
+SELECT 
+  r.tuss, 
+  r.convenio, 
+  c.nm_convenio, 
+  r.vl_total
+    FROM REPASSE_IMAGEM_SW r
+    JOIN CONVENIO c 
+    ON r.convenio = c.cd_convenio  
+ORDER BY TUSS ASC;
+
+
+-- SELECT TABELA REPASSE_IMAGEM_SW COM VALIDAÇÕES 
+SELECT TUSS, CONVENIO, vl_total, COUNT(*) AS TOTAL
+    FROM REPASSE_IMAGEM_SW
+    WHERE TUSS IN (40901211, 41001036)
+    AND CONVENIO IN (28, 16)
+    GROUP BY TUSS, CONVENIO, vl_total
+ORDER BY CONVENIO ASC;
+
+
+-- JOIN - TABELA REPASSE_IMAGEM_SW E CONVENIO 
+
+SELECT 
+  r.tuss,
+  r.convenio,
+  c.nm_convenio,
+  r.vl_total,
+COUNT(*) AS total
+FROM REPASSE_IMAGEM_SW r
+JOIN CONVENIO c 
+  ON r.convenio = c.cd_convenio
+WHERE r.tuss IN (40901211, 41001036)
+  AND r.convenio IN (28, 16)
+GROUP BY r.tuss, r.convenio, c.nm_convenio, r.vl_total
+ORDER BY r.convenio ASC;
+
+-- INNER JOIN - TABELA REPASSE_IMAGEM_SW E CONVENIO 
+
+SELECT 
+  r.tuss,
+  r.convenio,
+  c.nm_convenio,
+  r.vl_total,
+  COUNT(*) AS total
+FROM REPASSE_IMAGEM_SW r
+INNER JOIN CONVENIO c 
+  ON r.convenio = c.cd_convenio
+WHERE r.tuss IN (40901211, 41001036)
+  AND r.convenio IN (28, 16)
+GROUP BY r.tuss, r.convenio, c.nm_convenio, r.vl_total
+ORDER BY r.convenio ASC;
+
+/*
+🧩 Explicação:
+-- INNER JOIN conecta REPASSE_IMAGEM_SW com CONVENIO pela coluna de código (convenio = cd_convenio).
+-- COUNT(*) conta quantas vezes aparece cada combinação de tuss, convenio, vl_total.
+-- GROUP BY necessário porque estamos usando agregação (COUNT(*)).
+-- ORDER BY organiza o resultado pelo código do convênio.
+*/
+
+
+
+
+
+
+

@@ -1,0 +1,49 @@
+
+
+     ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO DISABLE;
+     ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO DISABLE;
+
+UPDATE atendime SET tp_atendimento_tiss = NULL WHERE tp_atendimento_tiss IS NOT NULL
+AND dt_atendimento >= To_Date('01/07/2024 00:00:00', 'DD/MM/YYYY HH24:MI:SS')
+AND DT_ATENDIMENTO = SYSDATE-1
+AND CD_CONVENIO IN (3,5,7,8,10,15,16,19,26,35,48,53,54,74,78,79);
+COMMIT;
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO ENABLE;
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO ENABLE;
+
+
+
+
+     ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO DISABLE;
+     ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO DISABLE;
+
+
+         UPDATE atendime
+SET tp_atendimento_tiss = NULL
+
+---SELECT * FROM atendime
+WHERE tp_atendimento_tiss IS not NULL
+AND cd_atendimento IN (
+    SELECT DISTINCT CD_ATENDIMENTO
+    FROM ITREG_AMB
+    WHERE CD_REG_AMB IN (
+        SELECT CD_REG_AMB
+        FROM REG_AMB
+        WHERE CD_REMESSA = 222503
+    )
+);
+
+  COMMIT;
+
+
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO ENABLE;
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO ENABLE;
+
+                    DECLARE
+  erro VARCHAR2(3000);  retorna varchar2(3000);
+begin
+  dbamv.pkg_mv2000.atribui_empresa(1); --numero da empresa
+--Tiss 4.0 - remessa
+  retorna := dbamv.pkg_ffcv_tiss_v4.f_gera_envio(null,null,222503,null,'R',erro,null); --trocar o p_remessa pelo numero da remessa
+  dbms_output.put_line(retorna|| ' ' || erro);
+END;

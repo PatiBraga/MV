@@ -1,0 +1,21 @@
+-- Verificar informações da TABELA
+SELECT *
+FROM itped_rx
+WHERE cd_ped_rx  = '222116'
+--------------------------------------
+
+SELECT * FROM ITPED_RX
+WHERE CD_PED_RX = 222116
+      AND CD_EXA_RX = 968;
+--------------------------------------
+
+-- comando para excluir um exame de um pedido -- *
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ITSOLIC_PSDI DISABLE;
+ALTER TRIGGER DBAMV.TRG_ITPED_RX_LOG_EXCLUSAO DISABLE;
+
+DELETE FROM ITPED_RX
+WHERE CD_PED_RX = 222116  AND CD_EXA_RX = 968;
+
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ITSOLIC_PSDI enable;
+ALTER TRIGGER DBAMV.TRG_ITPED_RX_LOG_EXCLUSAO enable;
+

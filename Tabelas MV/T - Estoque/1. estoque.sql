@@ -1,0 +1,6 @@
+ SELECT *
+ FROM dbamv.estoque
+ WHERE cd_estoque = 31
+
+   SELECT * FROM dbamv.MVTO_ESTOQUE
+    WHERE DSP_CD_BARRAS = '2000001427736';

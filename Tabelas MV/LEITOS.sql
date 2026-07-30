@@ -1,0 +1,2 @@
+-- LEITOS
+O - Ocup. por paciente / V - Vago / L - Em Limpeza / I - Ocup. por infecção / R - Ocup. por reserva / A - Acompanhante / E - Reforma / M - Manutenção / N - Interdição / C - Interditado por Infecção / T - Interditado Temporariamente /

@@ -1,0 +1,80 @@
+ /* 1. Consulta atendimento na tabela de aviso de cirurgia */
+SELECT *
+  FROM aviso_cirurgia
+ WHERE cd_atendimento in ('1138848', '1138008');
+
+
+/* 2. Consulta aviso de cirurgia específico */
+SELECT *
+  FROM aviso_cirurgia
+ WHERE cd_aviso_cirurgia in ('61624', '61368', '61270');
+
+
+/*
+UPDATE aviso_cirurgia
+   SET dt_aviso_cirurgia = TO_DATE('05/03/2026', 'DD/MM/YYYY')
+ WHERE cd_aviso_cirurgia = '61624' AND cd_paciente = '342793';
+*/
+
+
+/* 3. Consulta atendimentos relacionados ao aviso de cirurgia */
+SELECT *
+  FROM atendime
+ WHERE cd_atendimento IN (1138008, 1138848);
+/
+
+SELECT *
+FROM pro_fat
+WHERE cd_pro_fat IN ('40040194', '00020010');
+
+
+/
+SELECT *
+FROM MVTO_ESTOQUE
+WHERE cd_aviso_cirurgia = '61624'  AND cd_mvto_estoque =  '3193605'
+/
+                                                                         40040194
+
+SELECT *
+FROM  dbamv.solsai_pro
+WHERE cd_aviso_cirurgia = '61624'
+
+
+/*
+-- DESABILITAR A TRIGGER
+ALTER TRIGGER DBAMV.TRG_MVTO_ESTOQUE_VALIDA_ESTOQ DISABLE;
+ALTER TRIGGER DBAMV.TRG_MVTO_ESTOQUE_ATUALIZA_EMP DISABLE;
+ALTER TRIGGER DBAMV.TRG_U_MVTO_ESTOQUE DISABLE;
+
+-- EXECUTAR O UPDATE
+UPDATE mvto_estoque
+   SET dt_mvto_estoque = TO_DATE('05/03/2026', 'DD/MM/YYYY'),
+       hr_mvto_estoque = TO_DATE('05/03/2026 13:27:24', 'DD/MM/YYYY HH24:MI:SS')
+ WHERE cd_aviso_cirurgia = '61624'
+   AND cd_mvto_estoque   = '3193605';
+
+-- HABILITAR A TRIGGER NOVAMENTE
+ALTER TRIGGER DBAMV.TRG_MVTO_ESTOQUE_VALIDA_ESTOQ ENABLE;
+ALTER TRIGGER DBAMV.TRG_MVTO_ESTOQUE_ATUALIZA_EMP ENABLE;
+ALTER TRIGGER DBAMV.TRG_U_MVTO_ESTOQUE ENABLE;
+
+*/
+
+-- VERIFICAR STATUS DAS TRIGGERS
+SELECT owner,
+       trigger_name,
+       status
+  FROM dba_triggers
+ WHERE owner = 'DBAMV'
+   AND trigger_name IN (
+       'TRG_MVTO_ESTOQUE_VALIDA_ESTOQ',
+       'TRG_MVTO_ESTOQUE_ATUALIZA_EMP',
+       'TRG_U_MVTO_ESTOQUE'
+       )
+ ORDER BY trigger_name;
+
+
+
+
+
+

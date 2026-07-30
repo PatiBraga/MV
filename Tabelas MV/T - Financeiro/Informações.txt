@@ -1,0 +1,10 @@
+Cadastro de rotinas e variáveis \ conculta rotinas e variáveis padrão
+tela - M_ROTINAS
+
+
+Empresa 
+tela - M_CENTRO_CUSTO
+
+
+Relatótios de Exames Realizados 
+R_EXA_REALIZ_DIA
