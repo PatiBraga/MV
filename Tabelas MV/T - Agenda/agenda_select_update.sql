@@ -65,6 +65,6 @@ WHERE cd_escala_central = 27867
 
 COMMIT;
 /
-
+-- Select tabela
 SELECT * FROM it_agenda_central
 /
