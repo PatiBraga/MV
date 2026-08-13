@@ -1,0 +1,19 @@
+-- RETORNA SOMENTE O PAPEL REFERENTE A TELA -- 
+
+SELECT
+    p.cd_papel,
+    p.ds_papel,
+    m.cd_sistema_dono,
+    m.cd_modulo,
+    m.nm_modulo,
+    m.tp_tela,
+    m.tp_perfil
+FROM
+    dbasgu.papel p
+JOIN dbasgu.papel_mod pm ON p.cd_papel = pm.cd_papel
+JOIN dbasgu.modulos m ON pm.cd_modulo = m.cd_modulo
+WHERE
+    m.cd_modulo = 'M_PROT_ENVIO'
+ORDER BY
+    p.cd_papel,
+    m.nm_modulo;
