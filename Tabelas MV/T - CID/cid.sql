@@ -1,16 +1,16 @@
 SELECT
-    p.cd_paciente,
-    p.nm_paciente,
-    a.cd_atendimento,
+    p.cd_paciente AS "Código Paciente",
+    p.nm_paciente AS "Nome Paciente",
+    a.cd_atendimento "Código Paciente",
     CASE
         WHEN a.tp_atendimento = 'I' THEN 'Internação'
         WHEN a.tp_atendimento = 'A' THEN 'Ambulatório'
         WHEN a.tp_atendimento = 'U' THEN 'Urgência'
-        ELSE a.tp_atendimento
+        ELSE a.tp_atendimento AS "Tipo atendimento"
     END AS tp_atendimento,
-    TO_CHAR(a.dt_atendimento, 'DD/MM/YYYY') AS dt_atendimento,
-    d.cd_cid,
-    c.ds_cid
+    TO_CHAR(a.dt_atendimento, 'DD/MM/YYYY') AS dt_atendimento AS "Data Atendimento" ,
+    d.cd_cid AS "Código CID",
+    c.ds_cid AS "Descrição CID"
 FROM paciente p
 JOIN atendime a
     ON a.cd_paciente = p.cd_paciente
@@ -21,7 +21,6 @@ JOIN cid c
 WHERE UPPER(TRIM(d.cd_cid)) LIKE 'G36%'
 ORDER BY
     a.dt_atendimento DESC;
-
 
 
 
