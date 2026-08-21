@@ -1,6 +1,4 @@
 # Não versionar vídeos grandes
--- *.mp4
--- *.avi
 *.mkv
 *.mov
 
