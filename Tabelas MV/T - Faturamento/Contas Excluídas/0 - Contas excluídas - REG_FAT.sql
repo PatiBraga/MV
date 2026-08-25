@@ -1,16 +1,17 @@
+-- Validar - Contas excluÃ­das - REG_FAT
 SELECT
-    a.cd_reg_fat AS "Código da Conta",
-    a.cd_atendimento AS "Código do Atendimento",
-    a.cd_convenio AS "Código do Convênio",
-    a.cd_remessa AS "Código da Remessa",
+    a.cd_reg_fat AS "CÃ³digo da Conta",
+    a.cd_atendimento AS "CÃ³digo do Atendimento",
+    a.cd_convenio AS "CÃ³digo do ConvÃªnio",
+    a.cd_remessa AS "CÃ³digo da Remessa",
     a.vl_total_conta AS "Valor da Conta",
     a.audit_dt_registro AS "Aud. Data Registro",
-    a.audit_cd_usuario AS "Aud. Usuário",
+    a.audit_cd_usuario AS "Aud. UsuÃ¡rio",
     a.sn_fechada AS "Fechada",
     CASE
-        WHEN a.audit_tp_acao = 'E' THEN 'Excluído'
+        WHEN a.audit_tp_acao = 'E' THEN 'ExcluÃ­do'
         ELSE a.audit_tp_acao
-    END AS "Tipo da Ação"
+    END AS "Tipo da AÃ§Ã£o"
 
 FROM audit_dbamv.reg_fat a
 WHERE a.audit_tp_acao = 'E'
@@ -21,11 +22,5 @@ WHERE a.audit_tp_acao = 'E'
 ORDER BY a.audit_dt_registro;
 
 
-
-Criar CASE - a.vl_total_conta AS "Valor da Conta",
-valor NULL = SEM VALOR
-
-CRIAR CASE - a.cd_remessa AS "Código da Remessa"
-NULL - SEM REMESSA
 
 
