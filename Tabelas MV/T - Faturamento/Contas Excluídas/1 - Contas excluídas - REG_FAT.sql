@@ -1,4 +1,5 @@
 -- Validar Auditória - Contas excluídas - REG_FAT
+
 SELECT
     a.cd_reg_fat AS "Código da Conta",
     a.cd_atendimento AS "Código do Atendimento",
