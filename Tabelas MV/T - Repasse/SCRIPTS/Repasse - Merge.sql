@@ -6,6 +6,49 @@ ORDER BY tuss;
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+MERGE INTO REPASSE_IMAGEM_SW T
+USING (
+    SELECT '41101243' AS tuss, 48 AS convenio, 738.01 AS vl_total FROM DUAL UNION ALL
+    SELECT '41101618'        , 15            , 450.85             FROM DUAL UNION ALL
+    SELECT '41101227'        , 15            , 457.35             FROM DUAL UNION ALL
+    SELECT '41101227'        , 30            , 460.28             FROM DUAL UNION ALL
+    SELECT '41101227'        , 35            , 460.28             FROM DUAL UNION ALL
+    SELECT '41101228'        , 35            , 730.06             FROM DUAL
+) S
+ON (T.tuss = S.tuss AND T.convenio = S.convenio)
+WHEN MATCHED THEN
+    UPDATE SET
+        T.vl_total = S.vl_total
+WHEN NOT MATCHED THEN
+    INSERT (tuss, convenio, vl_total)
+    VALUES (S.tuss, S.convenio, S.vl_total);
+
+COMMIT;
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+SELECT
+    r.tuss,
+    r.convenio AS cd_convenio,
+    c.nm_convenio,
+    r.vl_total
+FROM REPASSE_IMAGEM_SW r
+INNER JOIN CONVENIO c
+    ON TO_CHAR(c.cd_convenio) = r.convenio
+WHERE (r.tuss = '41101243' AND r.convenio = '48')
+   OR (r.tuss = '41101618' AND r.convenio = '15')
+   OR (r.tuss = '41101227' AND r.convenio = '15')
+   OR (r.tuss = '41101227' AND r.convenio = '30')
+   OR (r.tuss = '41101227' AND r.convenio = '35')
+ORDER BY
+    r.tuss,
+    r.convenio;
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 MERGE INTO REPASSE_IMAGEM_SW T
 USING (
