@@ -1,0 +1,159 @@
+-- Tabelas W_DOCUMENTO_CLINICO - PW_TIPO_DOCUMENTO - PACIENTE
+
+SELECT
+    p.nm_paciente,
+    dc.cd_atendimento,
+    dc.cd_prestador,
+    dc.cd_documento_clinico,
+    dc.cd_tipo_documento,
+    tc.ds_tipo_documento,
+    td.nm_tabela,
+    dc.cd_usuario,
+    dc.tp_status,
+    dc.dh_fechamento,
+    dc.cd_documento_cancelado,
+    dc.dh_documento,
+    td.sn_ativo,
+    dc.cd_setor,
+    td.sn_pendencia_impeditiva_alta
+FROM
+    DBAMV.PW_DOCUMENTO_CLINICO dc
+JOIN
+    DBAMV.PW_TIPO_DOCUMENTO td ON dc.cd_tipo_documento = td.cd_tipo_documento
+JOIN
+    dbamv.paciente p ON p.cd_paciente = dc.cd_paciente
+LEFT JOIN
+    DBAMV.PW_TIPO_DOCUMENTO tc ON dc.cd_tipo_documento = tc.cd_tipo_documento  -- Corrigindo o relacionamento para o tipo de documento
+WHERE
+--    dc.cd_paciente = '296852'  -- Filtro pelo código do paciente
+ --   dc.tp_status = 'ABERTO'  -- Filtro pelo status do documento
+     td.cd_tipo_documento = 16  -- Filtro pelo tipo de documento
+ AND   dc.cd_atendimento IN ('1221948', '1121180')  -- Filtro opcional pelo código de atendimento
+ORDER BY
+    dc.dh_documento DESC;  -- Ordenação pela data do documento
+    
+----------------------------------------------------------------------------------------
+
+-- UPDATE para realizar alteração nas tabelas.
+
+UPDATE DBAMV.PW_DOCUMENTO_CLINICO
+SET dh_fechamento = '15/09/2026'
+WHERE cd_atendimento = '1221948'
+      AND cd_documento_clinico = '8031078'
+      AND cd_prestador;
+
+------------------------------------------------------------------------------------------
+
+-- UPDATE para realizar alteração da data nas tabelas.
+UPDATE DBAMV.PW_DOCUMENTO_CLINICO
+   SET dh_fechamento = TO_DATE('15/09/2026', 'DD/MM/YYYY'),
+       dh_impresso   = TO_DATE('15/09/2026', 'DD/MM/YYYY'),
+       dh_documento  = TO_DATE('15/09/2026', 'DD/MM/YYYY')
+ WHERE cd_atendimento = 1221948
+   AND cd_documento_clinico IN (9065770, 9064193); 
+
+--------------------------------------------------------------------------------------------
+
+-- Validação tabela PRE_MED - PROBLEMA NA PRESCRIÇÃO
+SELECT 
+    pm.CD_ATENDIMENTO,
+    pm.CD_PRE_MED AS CD_PRESCRICAO,
+    pm.DT_PRE_MED AS DT_PRESCRICAO,
+    pm.HR_PRE_MED AS HR_PRESCRICAO,
+    pm.DT_VALIDADE,
+    pm.CD_PRESTADOR,
+    pr.NM_PRESTADOR,
+    pm.SN_FECHADO,
+    CASE 
+        WHEN pm.SN_FECHADO = 'S' THEN 'FECHADA'
+        WHEN pm.SN_FECHADO = 'N' THEN 'ABERTA'
+        ELSE 'INDEFINIDO'
+    END AS DS_STATUS_PRESCRICAO
+FROM 
+    DBAMV.PRE_MED pm
+    INNER JOIN DBAMV.PRESTADOR pr ON pm.CD_PRESTADOR = pr.CD_PRESTADOR
+WHERE 
+    pm.CD_ATENDIMENTO = 1221948 -- Substitua pelo número do atendimento desejado (ex: 1221948)
+--  AND  pm.CD_PRE_MED = '3250237'
+ORDER BY 
+    pm.DT_PRE_MED DESC, 
+    pm.HR_PRE_MED DESC;
+
+--------------------------------------------------------------------------------------------------
+
+-- SELECT PRE_MED
+
+SELECT * FROM pre_med
+
+INNER JOIN pw_documento_clinico ON pw_documento_clinico.cd_documento_clinico = pre_med.cd_documento_clinico
+
+WHERE pre_med.cd_atendimento = 1221948
+
+AND pre_med.sn_fechado = 'N'
+AND pre_med.cd_objeto = 81
+
+------------------------------------------------------------------------------------------------------
+
+-- UPDATE 
+UPDATE DBAMV.PRE_MED
+     SET  fl_impresso = 'S'   -- Marcar como impressa/liberada
+WHERE pre_med.cd_pre_med = '3250237'
+
+-------------------------------------------------------------------------------------------------------
+
+-- UPDATE PRE_MED
+UPDATE DBAMV.PRE_MED
+SET    sn_fechado             = 'S',   -- Voltar ao padrão (a normal é 'N')
+       fl_impresso            = 'S',   -- Marcar como impressa/liberada
+       dh_impressao           = TO_DATE('14.09.2026', 'DD.MM.YYYY')
+WHERE pre_med.cd_atendimento = 1221948
+AND pre_med.sn_fechado = 'N'
+AND pre_med.cd_objeto = 81
+
+-------------------------------------------------------------------------------------------------------
+
+-- Desabilitar a trigger
+ALTER TRIGGER DBAMV.TRG_VALIDA_DOCUMENTO_CLINICO DISABLE;
+ALTER TRIGGER DBAMV.TRG_U_PRE_MED DISABLE;
+
+-------------------------------------------------------------------------------------------------------
+
+-- Habilitar a trigger
+ALTER TRIGGER DBAMV.TRG_VALIDA_DOCUMENTO_CLINICO ENABLE;
+ALTER TRIGGER DBAMV.TRG_U_PRE_MED ENABLE;
+
+-------------------------------------------------------------------------------------------------------
+
+-- Validar o status da trigger
+SELECT owner,
+       trigger_name,
+       table_name,
+       status,
+       triggering_event,
+       trigger_type
+  FROM all_triggers
+ WHERE owner = 'DBAMV'
+   AND trigger_name = 'TRG_VALIDA_DOCUMENTO_CLINICO';
+
+------------------------------------------------------------------------------------------------------------
+
+SELECT CASE
+         WHEN status = 'ENABLED' THEN 'TRIGGER HABILITADA'
+         WHEN status = 'DISABLED' THEN 'TRIGGER DESABILITADA'
+         ELSE 'STATUS: ' || status
+       END AS situacao
+  FROM all_triggers
+ WHERE owner = 'DBAMV'
+   AND trigger_name = 'TRG_VALIDA_DOCUMENTO_CLINICO';
+
+-------------------------------------------------------------------------------------------------------------
+
+SELECT line, text
+FROM dba_source
+WHERE owner = 'DBAMV'
+  AND name  = 'TRG_U_PRE_MED'
+  AND type  = 'TRIGGER'
+ORDER BY line;
+
+
+   
