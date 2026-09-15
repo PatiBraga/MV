@@ -1,0 +1,22 @@
+-- Remessa Fechada
+
+SELECT DISTINCT
+    r.CD_REMESSA           AS codigo_remessa,
+    r.NR_REMESSA_CONVENIO AS numero_remessa_convenio,
+    rf.CD_CONVENIO        AS codigo_convenio,
+    c.NM_CONVENIO         AS nome_convenio,
+    r.DT_ABERTURA         AS data_abertura,
+    r.DT_FECHAMENTO       AS data_fechamento,
+    r.SN_FECHADA          AS remessa_fechada,
+    r.NM_USUARIO_FECHOU   AS usuario_fechou,
+    u.NM_USUARIO          AS nome_completo_usuario_fechou
+FROM 
+    DBAMV.REMESSA_FATURA r
+    LEFT JOIN DBAMV.REG_FAT rf ON r.CD_REMESSA = rf.CD_REMESSA
+    LEFT JOIN DBAMV.CON_PLA cp ON rf.CD_CON_PLA = cp.CD_CON_PLA
+    LEFT JOIN DBAMV.CONVENIO c ON cp.CD_CONVENIO = c.CD_CONVENIO
+    LEFT JOIN DBASGU.USUARIOS u ON r.NM_USUARIO_FECHOU = u.CD_USUARIO
+WHERE 
+    r.DT_ABERTURA >= TO_DATE('01/01/2023', 'DD/MM/YYYY')
+ORDER BY 
+    r.DT_ABERTURA DESC;
