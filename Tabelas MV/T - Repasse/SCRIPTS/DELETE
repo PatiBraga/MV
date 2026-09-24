@@ -1,0 +1,35 @@
+-- Validar tuss tabela REPASSE_IMAGEM_SW
+
+SELECT
+    R.tuss,
+    R.convenio,
+    C.nm_convenio,
+    R.vl_total
+FROM REPASSE_IMAGEM_SW R
+JOIN CONVENIO C
+  ON C.cd_convenio = R.convenio
+WHERE R.tuss IN (
+    '41103025',
+    '41103017',
+    '41003020',
+    '41003012',
+    '40903010'
+)
+ORDER BY R.tuss, R.convenio;
+
+###############################################################################################################
+
+/*
+-- DELETE para deletar os dados da tabela REPASSE_IMAGEM_SW
+
+DELETE FROM REPASSE_IMAGEM_SW
+WHERE tuss IN (
+    '41103025',
+    '41103017',
+    '41003020',
+    '41003012',
+    '40903010'
+)
+AND convenio = 8;
+
+*/
