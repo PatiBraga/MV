@@ -2,6 +2,7 @@
 
 -- Consulta de validação prévia do registro
 SELECT * FROM dbamv.atendime WHERE cd_atendimento = 1157432;
+---------------------------------------------------------------------------
 
 -- Desabilitação temporária das Triggers de integração
 ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO DISABLE;
@@ -24,4 +25,31 @@ WHERE cd_atendimento = 1157432;
 -- Reabilitação das Triggers de integração
 ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO ENABLE;
 ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO ENABLE;
+---------------------------------------------------------------------------
+
+-- Validação das Alterações de Alta
+
+SELECT cd_atendimento,
+       dt_alta_medica,
+       hr_alta_medica,
+       dt_alta,
+       hr_alta
+FROM dbamv.atendime
+WHERE cd_atendimento = 1157432;
+---------------------------------------------------------------------------
+
+-- Validação do status das triggers envolvidas -> Confirma se as triggers foram reativadas corretamente após a atualização.
+SELECT owner,
+       trigger_name,
+       status
+FROM all_triggers
+WHERE trigger_name IN ('TRG_IMVW_SAI_ATENDIMENTO', 'TRG_IMVW_OUT_ATENDIMENTO');
+
+
+
+
+
+
+
+
 
