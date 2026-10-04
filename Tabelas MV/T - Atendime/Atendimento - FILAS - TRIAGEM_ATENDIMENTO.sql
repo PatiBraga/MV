@@ -13,10 +13,10 @@
     -- Tempo de espera (assumindo tempo entre chegada e CHAMADA)
     ,ROUND((CADCHAMADA.DH_PROCESSO - TOTEM.DH_PROCESSO) * 24 * 60) AS "TEMPO_ESPERA_CHAMADA"
 
-    -- Tempo de espera (assumindo tempo entre chegada e inÌcio)
+    -- Tempo de espera (assumindo tempo entre chegada e in√≠cio)
     ,ROUND((CADINI.DH_PROCESSO - TOTEM.DH_PROCESSO) * 24 * 60) AS "TEMPO_ESPERA_INICIO"
 
-    -- DuraÁ„o do atendimento (conclus„o - chamada)
+    -- Dura√ß√£o do atendimento (conclus√£o - chamada)
     ,ROUND((CADFIM.DH_PROCESSO - CADINI.DH_PROCESSO) * 24 * 60) AS "DURACAO"
 
     ,CADINI.NM_USUARIO                            AS "ATENDENTE"
@@ -39,7 +39,7 @@ FROM
 JOIN FILA_SENHA FS
       ON FS.CD_FILA_SENHA = TA.CD_FILA_SENHA
 
--- InÌcio (tipo 1 - senha emitida)
+-- In√≠cio (tipo 1 - senha emitida)
 JOIN DBAMV.SACR_TEMPO_PROCESSO Totem
     ON totem.CD_TRIAGEM_ATENDIMENTO = ta.CD_TRIAGEM_ATENDIMENTO
    AND totem.CD_TIPO_TEMPO_PROCESSO = 1
@@ -92,7 +92,7 @@ LEFT JOIN DBAMV.SACR_TEMPO_PROCESSO MEDFIM
     ON MEDFIM.CD_TRIAGEM_ATENDIMENTO = ta.CD_TRIAGEM_ATENDIMENTO
    AND MEDFIM.CD_TIPO_TEMPO_PROCESSO = 32
 
--- RemoÁ„o (tipo 99)
+-- Remo√ß√£o (tipo 99)
 LEFT JOIN DBAMV.SACR_TEMPO_PROCESSO removido
     ON removido.CD_TRIAGEM_ATENDIMENTO = ta.CD_TRIAGEM_ATENDIMENTO
    AND removido.CD_TIPO_TEMPO_PROCESSO = 99
