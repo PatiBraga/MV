@@ -20,7 +20,7 @@ ORDER BY
 
 
 
--- Query: Usu·rios que possuem o cd_papel e cd_modulo
+-- Query: Usu√°rios que possuem o cd_papel e cd_modulo
  SELECT
     u.cd_usuario,
     u.nm_usuario,
@@ -46,7 +46,7 @@ ORDER BY
 
 
 
--- Query: Usu·rios com acesso aos mÛdulos M_PRODUTO e M_TIPPRE e todos os seus papÈis listados
+-- Query: Usu√°rios com acesso aos m√≥dulos M_PRODUTO e M_TIPPRE e todos os seus pap√©is listados
 SELECT
     u.cd_usuario,
     u.nm_usuario,
