@@ -3,7 +3,7 @@ SELECT
     p.nm_paciente,
     a.cd_atendimento,
     CASE
-        WHEN a.tp_atendimento = 'I' THEN 'Internação'
+        WHEN a.tp_atendimento = 'I' THEN 'InternaÃ§Ã£o'
         ELSE a.tp_atendimento
     END AS tp_atendimento,
      TO_CHAR(a.dt_atendimento, 'DD/MM/YYYY') AS dt_atendimento,
