@@ -1,4 +1,4 @@
--- Validação antes do UPDATE
+-- ValidaÃ§Ã£o antes do UPDATE
 SELECT cd_atendimento,
        sn_retorno
 FROM atendime
@@ -16,7 +16,7 @@ WHERE cd_atendimento IN ('1118949', '1123153', '1124186');
 ALTER TRIGGER  MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO   ENABLE;
 ALTER TRIGGER  MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO   ENABLE;
 
--- Validação após o UPDATE
+-- ValidaÃ§Ã£o apÃ³s o UPDATE
 SELECT cd_atendimento,
        sn_retorno
 FROM atendime
