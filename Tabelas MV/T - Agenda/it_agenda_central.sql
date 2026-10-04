@@ -1,4 +1,4 @@
-
+-- Verificar lentidões e sessões travadas, travando....
 SELECT
     s.sid,
     s.serial#,
