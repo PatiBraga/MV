@@ -1,5 +1,6 @@
 -- Script: Consulta e Remoção de Dados de Alta Médica do Atendimento
 -- Consulta completa dos atendimentos informados
+
 SELECT *
      -- cd_mot_alt,
      --  dt_alta_medica,
