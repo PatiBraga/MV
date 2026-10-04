@@ -1,19 +1,20 @@
+-- Script: Consulta e Remoção de Dados de Alta Médica do Atendimento
+-- Consulta completa dos atendimentos informados
 SELECT *
      -- cd_mot_alt,
      --  dt_alta_medica,
      --   hr_alta_medica
 FROM dbamv.atendime WHERE cd_atendimento in ('1178924', '1178531');
+--------------------------------------------------------------------
 
-
-
+-- Consulta dos dados de alta médica do atendimento específico
 SELECT cd_mot_alt,
        dt_alta_medica,
        hr_alta_medica
 FROM dbamv.atendime WHERE cd_atendimento = 1178924 and cd_paciente = 84935;
+--------------------------------------------------------------------
 
-
-
-
+-- Consulta formatada dos dados de alta médica com data em formato legível
 SELECT cd_atendimento,
        cd_paciente,
        cd_mot_alt,
@@ -22,8 +23,9 @@ SELECT cd_atendimento,
 FROM dbamv.atendime
 WHERE cd_atendimento = 1178924
   AND cd_paciente    = 84935;
+--------------------------------------------------------------------
 
-/
+-- Desativação das triggers, remoção dos dados de alta médica e reativação das triggers
 
 ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO DISABLE;
 ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO DISABLE;
