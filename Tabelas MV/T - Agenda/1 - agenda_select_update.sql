@@ -1,34 +1,34 @@
 SELECT * 
 FROM it_agenda_central
 WHERE cd_agenda_central = 285700
------
+-------------------------------------------------
 
 SELECT * 
 from   log_opera_agenda_central
 WHERE cd_log_opera_agenda =  3231820      
------
+-------------------------------------------------
 
 SELECT tabela setor
------
+-------------------------------------------------
 
 SELECT * FROM SETOR
 ORDER BY cd_setor;
-
+-------------------------------------------------
 
 -- SELECT tabela  
 SELECT cd_agenda_central, cd_escala_central, cd_unidade_atendimento, cd_prestador, cd_setor
 FROM agenda_central
 WHERE  cd_escala_central = 27867
-/
+-------------------------------------------------
 
 SELECT cd_escala_central, cd_unidade_atendimento, cd_setor
 FROM escala_central
-
+-------------------------------------------------
 
 SELECT * escala_central;
 FROM escala_central
 WHERE cd_setor = 1
-/
+-------------------------------------------------
 
 -- SELECT entre as tabelas agenda_central e escala_central
 SELECT
@@ -57,14 +57,14 @@ e também as colunas de escala_central (cd_unidade_atendimento, cd_setor), mas r
 escala_cd_setor).
 */
 
-/
+
 UPDATE escala_central
 SET cd_setor = 35
 WHERE cd_escala_central = 27867
-/
+-------------------------------------------------
 
 COMMIT;
-/
+-------------------------------------------------
 
 SELECT * FROM it_agenda_central
 /
