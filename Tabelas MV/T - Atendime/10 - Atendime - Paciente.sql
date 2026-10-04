@@ -8,7 +8,7 @@ WHERE
     -- Nome completo exato (como fallback)
     UPPER(nm_paciente) = 'AARON YOICHI CHIKAZAWA FRANCA'
 
-    -- Nome começando com "AARON"
+    -- Nome comeÃ§ando com "AARON"
     OR UPPER(nm_paciente) LIKE 'AARON%'
 
     -- Nome contendo "YOICHI"
