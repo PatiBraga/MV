@@ -1,4 +1,4 @@
-Realizada a adequação da Query para correção das datas das altas contidas na tela do atendimento do internamento: 
+-- Query para correção das datas das altas contidas na tela do atendimento do internamento: 
 
 SELECT * FROM dbamv.atendime WHERE cd_atendimento = 1042447;
 
