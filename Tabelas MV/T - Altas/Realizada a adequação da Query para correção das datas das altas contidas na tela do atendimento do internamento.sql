@@ -1,27 +1,27 @@
- Realizada a adequaÁ„o da Query para correÁ„o das datas das altas contidas na tela do atendimento do internamento:
+-- Query para corre√ß√£o das datas das altas contidas na tela do atendimento do internamento:
 
--- Consulta de validaÁ„o prÈvia do registro
+-- Consulta de valida√ß√£o pr√©via do registro
 SELECT * FROM dbamv.atendime WHERE cd_atendimento = 1157432;
 
--- DesabilitaÁ„o tempor·ria das Triggers de integraÁ„o
+-- Desabilita√ß√£o tempor√°ria das Triggers de integra√ß√£o
 ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO DISABLE;
 ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO DISABLE;
 
--- AtualizaÁ„o do hor·rio da alta mÈdica
+-- Atualiza√ß√£o do hor√°rio da alta m√©dica
 UPDATE atendime
 SET
-  dt_alta_medica = TO_TIMESTAMP('16/04/2026 16:35', 'DD/MM/YYYY HH24:MI'),  -- Data/hora da alta mÈdica
-  hr_alta_medica = TO_TIMESTAMP('16/04/2026 16:35', 'DD/MM/YYYY HH24:MI')   -- Hora da alta mÈdica
+  dt_alta_medica = TO_TIMESTAMP('16/04/2026 16:35', 'DD/MM/YYYY HH24:MI'),  -- Data/hora da alta m√©dica
+  hr_alta_medica = TO_TIMESTAMP('16/04/2026 16:35', 'DD/MM/YYYY HH24:MI')   -- Hora da alta m√©dica
 WHERE cd_atendimento = 1157432;
 
--- AtualizaÁ„o do hor·rio da alta hospitalar
+-- Atualiza√ß√£o do hor√°rio da alta hospitalar
 UPDATE atendime
 SET
   dt_alta = TO_TIMESTAMP('16/04/2026 16:35', 'DD/MM/YYYY HH24:MI'),         -- Data/hora da alta hospitalar
   hr_alta = TO_TIMESTAMP('16/04/2026 16:35', 'DD/MM/YYYY HH24:MI')          -- Hora da alta hospitalar
 WHERE cd_atendimento = 1157432;
 
--- ReabilitaÁ„o das Triggers de integraÁ„o
+-- Reabilita√ß√£o das Triggers de integra√ß√£o
 ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ATENDIMENTO ENABLE;
 ALTER TRIGGER MVINTEGRA.TRG_IMVW_OUT_ATENDIMENTO ENABLE;
 
