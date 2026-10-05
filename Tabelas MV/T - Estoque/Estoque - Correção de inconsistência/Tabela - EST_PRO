@@ -1,0 +1,22 @@
+-- Validação do registro
+SELECT
+    cd_produto,
+    cd_estoque,
+    qt_estoque_atual
+FROM dbamv.est_pro
+WHERE cd_produto = 7986
+  AND cd_estoque = 2;
+
+---------------------------------------------------------------------
+
+-- Título: Atualização e validação da quantidade atual em estoque
+
+UPDATE dbamv.est_pro
+   SET qt_estoque_atual = 146
+ WHERE cd_produto = 7986
+   AND cd_estoque = 2;
+
+---------------------------------------------------------------------
+
+-- Execute COMMIT após confirmar que o valor está correto.
+-- COMMIT;
