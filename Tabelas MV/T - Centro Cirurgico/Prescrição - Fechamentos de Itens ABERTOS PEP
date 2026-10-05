@@ -84,19 +84,17 @@ ORDER BY
 -- SELECT PRE_MED
 
 SELECT * FROM pre_med
-
-INNER JOIN pw_documento_clinico ON pw_documento_clinico.cd_documento_clinico = pre_med.cd_documento_clinico
-
+INNER JOIN pw_documento_clinico 
+        ON pw_documento_clinico.cd_documento_clinico = pre_med.cd_documento_clinico
 WHERE pre_med.cd_atendimento = 1221948
-
-AND pre_med.sn_fechado = 'N'
-AND pre_med.cd_objeto = 81
+        AND pre_med.sn_fechado = 'N'
+        AND pre_med.cd_objeto = 81
 
 ------------------------------------------------------------------------------------------------------
 
 -- UPDATE 
 UPDATE DBAMV.PRE_MED
-     SET  fl_impresso = 'S'   -- Marcar como impressa/liberada
+SET  fl_impresso = 'S'   -- Marcar como impressa/liberada
 WHERE pre_med.cd_pre_med = '3250237'
 
 -------------------------------------------------------------------------------------------------------
