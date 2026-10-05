@@ -23,15 +23,15 @@ JOIN
 LEFT JOIN
     DBAMV.PW_TIPO_DOCUMENTO tc ON dc.cd_tipo_documento = tc.cd_tipo_documento  -- Corrigindo o relacionamento para o tipo de documento
 WHERE
-  --  dc.cd_paciente = '296852'  -- Filtro pelo código do paciente
+  --  dc.cd_paciente = '296852'  -- Filtro pelo cÃ³digo do paciente
  --   AND dc.tp_status = 'ABERTO'  -- Filtro pelo status do documento
  --   AND td.cd_tipo_documento = 19  -- Filtro pelo tipo de documento
-   dc.cd_atendimento = '1107383'  -- Filtro opcional pelo código de atendimento
+   dc.cd_atendimento = '1107383'  -- Filtro opcional pelo cÃ³digo de atendimento
 ORDER BY
-    dc.dh_documento DESC;  -- Ordenação pela data do documento
+    dc.dh_documento DESC;  -- OrdenaÃ§Ã£o pela data do documento
 /
 
--- UPDATE para realizar alteração nas tabelas.
+-- UPDATE para realizar alteraÃ§Ã£o nas tabelas.
 
 UPDATE DBAMV.PW_DOCUMENTO_CLINICO
 SET tp_status = 'FECHADO'
