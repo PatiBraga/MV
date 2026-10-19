@@ -43,36 +43,37 @@ WHERE cd_atendimento IN (
 
 __________________________________________________________________________________
 
-SELECT *
-FROM reg_amb
-WHERE cd_remessa IN ('231671', '233736', 232017);
-
-
-___________________________________________________________________________________
-
 -- SELECT
 SELECT *
 FROM dbamv.remessa_fatura
-WHERE cd_remessa IN ('231671', '233736', 232017);
-
-
-___________________________________________________________________________________
-
+WHERE cd_remessa IN ('231671', '232017', 
+          '239852',
+          '239896',
+          '239843',
+          '239908',
+          '239940',
+          '239905',
+          '240000',
+          '239998');
+______________________________________________________________________________
 
 -- Update para
 UPDATE dbamv.remessa_fatura
-SET dt_entrega_da_fatura = TO_DATE('22/05/2026', 'DD/MM/YYYY')
-WHERE cd_remessa = 232017
-  AND cd_fatura   = 8236;
+SET dt_entrega_da_fatura = TO_DATE('11/09/2026', 'DD/MM/YYYY')
+WHERE cd_remessa = 240000
+  AND cd_fatura   = 8435;
 /
 
+UPDATE dbamv.remessa_fatura
+SET dt_prevista_para_pgto = TO_DATE('09/10/2026', 'DD/MM/YYYY')
+WHERE cd_remessa = 240000
+  AND cd_fatura   = 8435;
+/
 
 UPDATE dbamv.remessa_fatura
 SET dt_entrega_da_fatura = NULL
 WHERE cd_remessa = 232017
   AND cd_fatura   = 8236;
-
-
 
 _____________________________________________________________________________________
 
@@ -81,4 +82,3 @@ SELECT *
 FROM dbamv.remessa_fatura
 WHERE cd_remessa = 232017
   AND cd_fatura  = 8236;
-
