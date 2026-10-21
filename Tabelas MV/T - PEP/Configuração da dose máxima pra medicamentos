@@ -1,0 +1,59 @@
+A configuração para bloqueio de dose máxima em pacientes adultos no sistema SOUL MV / PEP é totalmente viável. Seguem os esclarecimentos para cada um dos pontos solicitados:
+
+1. Telas do sistema envolvidas
+
+Tela principal de cadastro: M_TIPPRE – Itens para Prescrever (Caminho: Clínica e Assistencial > Gerenciamento de Unidades > Configuração > Tabelas > Itens para Prescrever).
+
+Tela complementar (Alertas/Justificativas): M_ALERTAS_PRESCRICAO – Alertas Prescrição (Caminho: Clínica e Assistencial > Gerenciamento de Unidades > Configuração > Tabelas > PEP > Alertas Prescrição).
+
+Importante: No MVPEP 2.0, as parametrizações de dose máxima devem ser configuradas exclusivamente na aba Subdosagem/Superdosagem da tela M_TIPPRE, pois os campos de quantidade máxima da aba Adicionais pertencem à versão legada (PEP 1.0) e não operam na versão atual.
+
+2. Procedimento para implementação
+
+Recomenda-se realizar e validar os passos abaixo primeiramente em ambiente de Homologação/Treinamento antes de replicar em Produção.
+
+Acesse o menu: Clínica e Assistencial > Gerenciamento de Unidades > Configuração > Tabelas > Itens para Prescrever (M_TIPPRE).
+
+Pesquise e selecione o medicamento desejado.
+
+Na parte inferior da tela, acesse a aba Subdosagem/Superdosagem.
+
+Preencha os seguintes parâmetros do registro:
+
+Quantidade máxima impeditiva: Informe a dosagem máxima permitida. Se o médico inserir um valor acima desse limite, a prescrição será bloqueada.
+
+Quantidade máxima de alerta (opcional): Caso queira que o sistema apenas alerte o médico antes de atingir o bloqueio impeditivo.
+
+Unidade: Selecione a unidade correspondente (ex.: MG, G, COMP).
+
+Período: Escolha a base de verificação entre Dose, Dia, Hora ou Minuto.
+
+Dias: Quantidade de dias considerados para o cálculo.
+
+Condições - Faixa etária (mês): Para aplicar especificamente a pacientes adultos, preencha a idade em meses (por exemplo: Idade mínima 216 meses — correspondente a 18 anos — e Idade máxima 9999).
+
+Condições - Peso (Kg): Preencha caso o controle dependa também do peso corporal.
+
+Mensagem: Descreva a mensagem que surgirá para o profissional justificando a restrição.
+
+Clique em Salvar.
+
+3. Impactos nos processos assistenciais
+
+Prescrição Médica:
+
+Ao atingir a Quantidade máxima impeditiva, o sistema apresenta a mensagem parametrizada e impede a inclusão/gravação do item com a dosagem excedente, obrigando o médico a adequar a conduta.
+
+Se configurada Quantidade máxima de alerta, a emissão do aviso não bloqueia o item, mas pode exigir o registro de justificativa clínica se assim estiver configurado na tela de alertas.
+
+Dispensação e Farmácia:
+
+Medicamentos impedidos por dose máxima não geram prescrição ativa e, consequentemente, não geram solicitações ao estoque nem registros na Avaliação Farmacêutica.
+
+Quando houver apenas alerta com justificativa aceita, a equipe de farmácia visualiza a sinalização de superdosagem na tela de Avaliação Farmacêutica, podendo atuar preventivamente com intervenção clínica.
+
+Administração e Checagem (Enfermagem):
+
+Como a dose impeditiva bloqueia o fechamento da prescrição pelo médico, a enfermagem não recebe horários aprazados indevidos para checagem.
+
+Nos casos de itens prescritos sob alerta de superdosagem, o sistema sinaliza o horário/item com o ícone correspondente na tela de Checagem, garantindo maior segurança à beira do leito.
