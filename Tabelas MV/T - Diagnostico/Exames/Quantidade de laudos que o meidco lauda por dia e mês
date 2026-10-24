@@ -1,0 +1,38 @@
+-- Quantidade de laudos que cada médico laudo por dia
+
+select j.nm_prestador nm_prestador_laudo,
+       trunc(i.dt_laudo) dt_laudo,
+       b.cd_itped_rx cd_acession_number,
+       b.cd_exa_rx,
+       h.ds_exa_rx,
+       count(*) over (partition by j.cd_prestador, trunc(i.dt_laudo)) qtd_exames_dia
+  from ITPED_RX b,
+       LAUDO_RX i,
+       PRESTADOR j,
+       EXA_RX h
+ where b.cd_laudo = i.cd_laudo
+   and i.cd_prestador_assinatura = j.cd_prestador
+   and b.cd_exa_rx = h.cd_exa_rx
+   and trunc(i.dt_laudo) between to_date('22/10/2026','dd/mm/yyyy') and to_date('22/10/2026','dd/mm/yyyy')
+ order by j.nm_prestador, trunc(i.dt_laudo), b.cd_itped_rx;
+
+=========================================================================================
+
+-- Quantidade de laudos que cada médico laudo por dia
+
+select j.nm_prestador nm_prestador_laudo,
+       i.dt_laudo,
+       to_char(i.dt_laudo,'hh24:mi:ss') hora_laudo,
+       b.cd_itped_rx cd_acession_number,
+       b.cd_exa_rx,
+       h.ds_exa_rx,
+       count(*) over (partition by j.cd_prestador, trunc(i.dt_laudo, 'MM')) qtd_exames_mes
+  from ITPED_RX b,
+       LAUDO_RX i,
+       PRESTADOR j,
+       EXA_RX h
+ where b.cd_laudo = i.cd_laudo
+   and i.cd_prestador_assinatura = j.cd_prestador
+   and b.cd_exa_rx = h.cd_exa_rx
+   and trunc(i.dt_laudo, 'MM') = to_date('01/10/2026','dd/mm/yyyy')
+ order by j.nm_prestador, i.dt_laudo, b.cd_itped_rx;
