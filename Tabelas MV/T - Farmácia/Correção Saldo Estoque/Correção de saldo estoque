@@ -1,0 +1,83 @@
+-- Correção de saldo de estoque consignado do produto 20361 (cateter angiográfico), estoque 32 (Farmácia – Hemodinâmica) e fornecedor 473. Há também telas do Soul MV, 
+como a Baixa de Produtos do Estoque com motivo “Correção de estoque consignado”.
+
+1. Saldo consignado atual
+SELECT ( e.qt_estoque_consignado
+       - e.qt_estoque_consumido
+       + e.qt_estoque_transferencia
+       - e.qt_baixada ) saldo_atual, e.*
+  FROM dbamv.est_consig_forn e
+ WHERE cd_produto = 20361
+-- AND cd_fornecedor = 3172DBA   (comentado; era um filtro de teste)
+   AND cd_estoque = 32;
+
+============================================================================
+
+2. Lotes com saldo
+SELECT * FROM dbamv.lot_pro
+ WHERE cd_produto = 20361
+   AND cd_estoque = 32
+   AND qt_estoque_atual > 0;
+
+============================================================================
+
+3. Soma do saldo físico dos lotes
+SELECT SUM(qt_estoque_atual) FROM dbamv.lot_pro
+ WHERE cd_produto = 20361
+   AND cd_estoque = 32
+   AND qt_estoque_atual > 0;
+
+Totaliza o estoque físico por lote
+
+===========================================================================
+
+4. Histórico de entradas por lote
+SELECT e.cd_ent_pro, e.dt_entrada, e.tp_documento_entrada, e.cd_estoque,
+       e.cd_fornecedor, i.cd_produto, l.cd_lote, l.qt_ent_pro
+  FROM dbamv.ent_pro e, dbamv.itent_pro i, dbamv.itlot_ent l
+ WHERE e.cd_ent_pro   = i.cd_ent_pro
+   AND i.cd_itent_pro = l.cd_itent_pro
+   AND i.cd_produto   = 20361
+-- AND l.cd_lote IS NULL
+   AND l.cd_lote = 'I3385425'
+ ORDER BY dt_entrada DESC;
+
+=============================================================================
+
+SELECT * FROM dbamv.estoque
+WHERE cd_estoque = 32
+
+=============================================================================
+
+Begin
+  dbamv.Pkg_Mv2000.Atribui_Empresa(1);
+End;
+/
+
+-- Para que serve
+O MV é multiempresa. Muitas tabelas e views do DBAMV filtram os dados pela empresa definida na sessão do banco. O Atribui_Empresa grava essa empresa no contexto da sessão atual, como se você tivesse entrado no sistema por aquela empresa.
+
+Na prática:
+Sem executá-lo, algumas consultas e atualizações feitas direto no SQLTools podem retornar vazio, ou procedures e triggers podem dar erro por não saber a empresa.
+Com ele, a sessão passa a “enxergar” os dados da empresa 1.
+O efeito vale só para a sessão atual. Se fechar ou reconectar o SQLTools, é preciso rodar de novo.
+Ele não altera dados, só configura o contexto.
+-- Como usar
+Rode o bloco primeiro, na mesma aba e conexão.
+Depois execute as queries ou o UPDATE.
+
+-- Para confirmar o nome da empresa certa, consulte as empresas cadastradas:
+
+SELECT cd_multi_empresa, ds_multi_empresa FROM dbamv.multi_empresas;
+
+===========================================================================
+
+
+5. UPDATE (o ajuste)
+UPDATE dbamv.est_consig_forn
+   SET qt_estoque_consignado = qt_estoque_consignado + 20
+ WHERE cd_produto    = 20361
+   AND cd_estoque    = 32
+   AND cd_fornecedor = 473;
+
+COMMIT;
