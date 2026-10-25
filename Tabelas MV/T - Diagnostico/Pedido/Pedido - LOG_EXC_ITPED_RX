@@ -1,0 +1,132 @@
+SELECT * FROM itped_rx
+WHERE cd_ped_rx = 271226;
+/
+
+SELECT *
+FROM itped_rx
+WHERE cd_exa_rx = 939
+  AND cd_ped_rx = 271226;
+
+
+/
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ITSOLIC_PSDI DISABLE;
+ALTER TRIGGER DBAMV.TRG_ITPED_RX_LOG_EXCLUSAO DISABLE;
+
+DELETE FROM itped_rx
+WHERE cd_exa_rx = 939
+  AND cd_ped_rx = 271226;
+/
+ALTER TRIGGER DBAMV.TRG_ITPED_RX_LOG_EXCLUSAO ENABLE;
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ITSOLIC_PSDI ENABLE;
+/
+
+SELECT owner, trigger_name, status
+FROM all_triggers
+WHERE (owner = 'DBAMV' AND trigger_name = 'TRG_ITPED_RX_LOG_EXCLUSAO')
+   OR (owner = 'MVINTEGRA' AND trigger_name = 'TRG_IMVW_SAI_ITSOLIC_PSDI');
+
+/
+
+
+SELECT *
+FROM    LOG_EXC_EXA_RX
+WHERE   cd_ped_rx = 271226
+/
+
+
+SELECT *
+  FROM ped_rx
+  WHERE cd_ped_rx = 271226 AND  cd_atendimento = 1216930
+/
+
+
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ITSOLIC_PSDI DISABLE;
+ALTER TRIGGER DBAMV.TRG_ITPED_RX_LOG_EXCLUSAO DISABLE;
+
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ITSOLIC_PSDI DISABLE;
+
+DELETE FROM ped_rx
+WHERE cd_ped_rx = 271226
+  AND cd_atendimento = 1216930;
+/
+ALTER TRIGGER MVINTEGRA.TRG_IMVW_SAI_ITSOLIC_PSDI enable;
+ALTER TRIGGER DBAMV.TRG_ITPED_RX_LOG_EXCLUSAO ENABLE;
+/
+DELETE FROM LOG_EXC_EXA_RX
+WHERE cd_exa_rx IN (939, 273, 940)
+  AND cd_ped_rx = 271226;
+/
+
+SELECT owner, trigger_name, status
+FROM all_triggers
+WHERE owner = 'MVINTEGRA'
+  AND trigger_name = 'TRG_IMVW_SAI_ITSOLIC_PSDI';
+/
+
+SELECT line, text
+FROM all_source
+WHERE owner = 'DBAMV'
+  AND name = 'TRG_ITPED_RX_LOG_EXCLUSAO'
+  AND type = 'TRIGGER'
+  AND line BETWEEN 25 AND 37
+ORDER BY line;
+/
+
+
+SELECT
+    fk.table_name       AS tabela_dependente,
+    fkc.column_name     AS coluna_dependente,
+    pk.owner            AS proprietario_tabela_mae,
+    pk.table_name       AS tabela_mae,
+    pkc.column_name     AS coluna_tabela_mae,
+    fk.constraint_name  AS restricao
+FROM all_constraints fk
+JOIN all_cons_columns fkc
+    ON fkc.owner = fk.owner
+   AND fkc.constraint_name = fk.constraint_name
+JOIN all_constraints pk
+    ON pk.owner = fk.r_owner
+   AND pk.constraint_name = fk.r_constraint_name
+JOIN all_cons_columns pkc
+    ON pkc.owner = pk.owner
+   AND pkc.constraint_name = pk.constraint_name
+   AND pkc.position = fkc.position
+WHERE fk.owner = 'DBAMV'
+  AND fk.constraint_name = 'CNT_LOG_EXC_EXA_RX_US_2_FK'
+  AND fk.constraint_type = 'R'
+ORDER BY fkc.position;
+/
+
+SELECT c.owner,
+       c.table_name      AS tabela_filha,
+       c.constraint_name,
+       p.table_name      AS tabela_referenciada
+FROM all_constraints c
+JOIN all_constraints p
+  ON p.owner = c.r_owner
+ AND p.constraint_name = c.r_constraint_name
+WHERE c.owner = 'DBAMV'
+  AND c.constraint_name = 'CNT_LOG_EXC_ITPED_RX_1_FK'
+  AND c.constraint_type = 'R';
+
+/
+
+SELECT *
+FROM    LOG_EXC_ITPED_RX
+WHERE   cd_ped_rx = 271226
+/
+
+SELECT *
+FROM LOG_EXC_ITPED_RX
+WHERE cd_ped_rx = 271226
+  AND cd_atendimento = 1216930
+  AND cd_itped_rx IN (335051, 335065);
+/
+
+
+DELETE FROM LOG_EXC_ITPED_RX
+WHERE cd_ped_rx = 271226
+  AND cd_atendimento = 1216930
+  AND cd_itped_rx IN (335051, 335065);
+
+/
