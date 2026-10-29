@@ -26,10 +26,31 @@ FROM FILME_TAB WHERE CD_TAB_FAT = 180 ;
 /
 COMMIT;
 /
+-- Defini VL_OPERACIONAL como zero nos registros da tabela VAL_PRO que pertencem à tabela de faturamento 290 e cujo valor operacional está nulo.
+UPDATE val_pro
+SET vl_operacional = 0
+WHERE vl_operacional IS NULL
+  AND cd_tab_fat = 290;
 
-UPDATE val_pro SET vl_operacional = 0 WHERE vl_operacional = NULL AND cd_tab_fat = 290
-/
-UPDATE val_pro SET vl_operacional = 0 WHERE vl_operacional IS NULL AND cd_tab_fat = 290
+-- Explicação:
+-- vl_operacional IS NULL: seleciona somente registros em que VL_OPERACIONAL não tem valor.
+-- cd_tab_fat = 290: limita a alteração à tabela de faturamento 290.
+-- SET vl_operacional = 0: substitui o NULL por 0 nos registros que atenderem às duas condições.
+-- Somente os registros que correspondem às duas condições serão alterados. Valores diferentes de NULL, mesmo que sejam 0, não serão modificados.
+
+-- Como conferir antes e depois
+-- Antes de executar, você pode verificar quantos registros serão afetados:
+SELECT COUNT(*) AS QT_REGISTROS
+FROM VAL_PRO
+WHERE VL_OPERACIONAL IS NULL
+  AND CD_TAB_FAT = 290;
+
+-- Depois, confirme que não restaram valores nulos nesse grupo:
+SELECT COUNT(*) AS QT_RESTANTES
+FROM VAL_PRO
+WHERE VL_OPERACIONAL IS NULL
+  AND CD_TAB_FAT = 290;
+
 /
 -----------------------------------------------------------------------------------------------
 
