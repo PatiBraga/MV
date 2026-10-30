@@ -1,0 +1,53 @@
+-- Conferência dos registros antes da exclusão
+SELECT
+    cd_atendimento,
+    cd_reg_fat,
+    cd_protocolo_doc
+FROM it_protocolo_doc
+WHERE (cd_atendimento = 1119458 AND cd_reg_fat = 113396 AND cd_protocolo_doc = 101786)
+   OR (cd_atendimento = 1155811 AND cd_reg_fat = 115265 AND cd_protocolo_doc = 103441)
+   OR (cd_atendimento = 1189721 AND cd_reg_fat = 115705 AND cd_protocolo_doc = 104063)
+   OR (cd_atendimento = 1194726 AND cd_reg_fat = 115885 AND cd_protocolo_doc = 104355)
+   OR (cd_atendimento = 1207660 AND cd_reg_fat = 116802 AND cd_protocolo_doc = 105407)
+   OR (cd_atendimento = 1209796 AND cd_reg_fat = 116869 AND cd_protocolo_doc = 105535)
+   OR (cd_atendimento = 1218838 AND cd_reg_fat = 117230 AND cd_protocolo_doc = 105939)
+   OR (cd_atendimento = 1181557 AND cd_reg_fat = 114764 AND cd_protocolo_doc = 103122);
+/
+
+-- Exclusão dos registros
+DELETE FROM it_protocolo_doc
+WHERE (cd_atendimento = 1119458 AND cd_reg_fat = 113396 AND cd_protocolo_doc = 101786)
+   OR (cd_atendimento = 1155811 AND cd_reg_fat = 115265 AND cd_protocolo_doc = 103441)
+   OR (cd_atendimento = 1189721 AND cd_reg_fat = 115705 AND cd_protocolo_doc = 104063)
+   OR (cd_atendimento = 1194726 AND cd_reg_fat = 115885 AND cd_protocolo_doc = 104355)
+   OR (cd_atendimento = 1207660 AND cd_reg_fat = 116802 AND cd_protocolo_doc = 105407)
+   OR (cd_atendimento = 1209796 AND cd_reg_fat = 116869 AND cd_protocolo_doc = 105535)
+   OR (cd_atendimento = 1218838 AND cd_reg_fat = 117230 AND cd_protocolo_doc = 105939)
+   OR (cd_atendimento = 1181557 AND cd_reg_fat = 114764 AND cd_protocolo_doc = 103122);
+/
+
+-- Validação após a exclusão: o resultado esperado é nenhuma linha
+SELECT
+    cd_atendimento,
+    cd_reg_fat,
+    cd_protocolo_doc
+FROM it_protocolo_doc
+WHERE (cd_atendimento = 1119458 AND cd_reg_fat = 113396 AND cd_protocolo_doc = 101786)
+   OR (cd_atendimento = 1155811 AND cd_reg_fat = 115265 AND cd_protocolo_doc = 103441)
+   OR (cd_atendimento = 1189721 AND cd_reg_fat = 115705 AND cd_protocolo_doc = 104063)
+   OR (cd_atendimento = 1194726 AND cd_reg_fat = 115885 AND cd_protocolo_doc = 104355)
+   OR (cd_atendimento = 1207660 AND cd_reg_fat = 116802 AND cd_protocolo_doc = 105407)
+   OR (cd_atendimento = 1209796 AND cd_reg_fat = 116869 AND cd_protocolo_doc = 105535)
+   OR (cd_atendimento = 1218838 AND cd_reg_fat = 117230 AND cd_protocolo_doc = 105939)
+   OR (cd_atendimento = 1181557 AND cd_reg_fat = 114764 AND cd_protocolo_doc = 103122);
+
+
+---------------------------------------------------------------------------------------------------
+/*
+-- Para identificação dos registros, considerar os seguintes parâmetros:
+Relatório: R_SITUACAO_DOCUMENTO
+Documento: 20 – Prontuário Completo
+Convênio: Todos
+Setor: 20 – Central de guias
+
+*/
