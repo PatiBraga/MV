@@ -153,5 +153,47 @@ WHERE owner = 'DBAMV'
   AND type  = 'TRIGGER'
 ORDER BY line;
 
+---------------------------------------------------------------------------------------------------------------
+-- Título: Validação do status das triggers da tabela PW_DOCUMENTO_CLINICO
+SELECT trigger_name, status
+  FROM all_triggers
+ WHERE table_name = 'PW_DOCUMENTO_CLINICO'
+   AND owner      = 'DBAMV';
+
+---------------------------------------------------------------------------------------------------------------
+
+-- Desabilitação de todas as triggers da tabela PW_DOCUMENTO_CLINICO
+ALTER TABLE DBAMV.PW_DOCUMENTO_CLINICO DISABLE ALL TRIGGERS;
+
+----------------------------------------------------------------------------------------------------------------
+
+-- Título: Habilitação de todas as triggers da tabela PW_DOCUMENTO_CLINICO
+ALTER TABLE DBAMV.PW_DOCUMENTO_CLINICO ENABLE ALL TRIGGERS;
+
+---------------------------------------------------------------------------------------------------------------
+
+-- Desabilitação individual das triggers da tabela PW_DOCUMENTO_CLINICO
+ALTER TRIGGER DBAMV.TRG_LOG_DOCUMENTO_CLINICO DISABLE;
+ALTER TRIGGER DBAMV.TRG_VALIDA_DOCUMENTO_CLINICO DISABLE;
+ALTER TRIGGER DBAMV.TRG_U_DOC_CLINICO_AVAFAR DISABLE;
+ALTER TRIGGER DBAMV.TRG_VALIDA_DATA_ALTA DISABLE;
+ALTER TRIGGER DBAMV.TRG_DOC_CLI_GERA_LOG_CONS_FIM DISABLE;
+ALTER TRIGGER DBAMV.TRG_PW_DOCUMENTO_CLINICO_NTFC DISABLE;
+ALTER TRIGGER DBAMV.TRG_SNOMEDCT_PACIENTE DISABLE;
+ALTER TRIGGER DBAMV.TRG_ATUALIZA_PREST_ATENDIME DISABLE;
+ALTER TRIGGER DBAMV.TRG_MVPEP_DOC_CONSISTE_FECHADO DISABLE;
+
+------------------------------------------------------------------------------------------------------------------
+
+-- Habilitação individual das triggers da tabela PW_DOCUMENTO_CLINICO
+ALTER TRIGGER DBAMV.TRG_LOG_DOCUMENTO_CLINICO ENABLE;
+ALTER TRIGGER DBAMV.TRG_VALIDA_DOCUMENTO_CLINICO ENABLE;
+ALTER TRIGGER DBAMV.TRG_U_DOC_CLINICO_AVAFAR ENABLE;
+ALTER TRIGGER DBAMV.TRG_VALIDA_DATA_ALTA ENABLE;
+ALTER TRIGGER DBAMV.TRG_DOC_CLI_GERA_LOG_CONS_FIM ENABLE;
+ALTER TRIGGER DBAMV.TRG_PW_DOCUMENTO_CLINICO_NTFC ENABLE;
+ALTER TRIGGER DBAMV.TRG_SNOMEDCT_PACIENTE ENABLE;
+ALTER TRIGGER DBAMV.TRG_ATUALIZA_PREST_ATENDIME ENABLE;
+ALTER TRIGGER DBAMV.TRG_MVPEP_DOC_CONSISTE_FECHADO ENABLE;
 
    
