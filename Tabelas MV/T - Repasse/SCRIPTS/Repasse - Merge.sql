@@ -8,6 +8,53 @@ ORDER BY tuss;
 
 MERGE INTO REPASSE_IMAGEM_SW T
 USING (
+    SELECT '41101243' AS tuss, 49 AS convenio, 457.50 AS vl_total FROM DUAL UNION ALL
+    SELECT '41101044'        , 26            , 223.95            FROM DUAL UNION ALL
+    SELECT '41101227'        , 21            , 335.45            FROM DUAL UNION ALL
+    SELECT '41101014'        , 21            , 340.54            FROM DUAL UNION ALL
+    SELECT '41101227'        , 5             , 335.45            FROM DUAL UNION ALL
+    SELECT '41101014'        , 5             , 340.54            FROM DUAL UNION ALL
+    SELECT '41101227'        , 94            , 335.45            FROM DUAL UNION ALL
+    SELECT '41101014'        , 94            , 340.54            FROM DUAL
+) S
+ON (T.tuss = S.tuss AND T.convenio = S.convenio)
+WHEN MATCHED THEN
+    UPDATE SET T.vl_total = S.vl_total
+WHEN NOT MATCHED THEN
+    INSERT (tuss, convenio, vl_total)
+    VALUES (S.tuss, S.convenio, S.vl_total);
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+SELECT S.tuss,
+       S.convenio,
+       S.vl_total AS vl_esperado,
+       T.vl_total AS vl_gravado,
+       CASE
+           WHEN T.tuss IS NULL           THEN 'NÃO ENCONTRADO'
+           WHEN T.vl_total = S.vl_total  THEN 'OK'
+           ELSE 'VALOR DIVERGENTE'
+       END AS status
+  FROM (
+        SELECT '41101243' AS tuss, 49 AS convenio, 457.50 AS vl_total FROM DUAL UNION ALL
+        SELECT '41101044'        , 26            , 223.95            FROM DUAL UNION ALL
+        SELECT '41101227'        , 21            , 335.45            FROM DUAL UNION ALL
+        SELECT '41101014'        , 21            , 340.54            FROM DUAL UNION ALL
+        SELECT '41101227'        , 5             , 335.45            FROM DUAL UNION ALL
+        SELECT '41101014'        , 5             , 340.54            FROM DUAL UNION ALL
+        SELECT '41101227'        , 94            , 335.45            FROM DUAL UNION ALL
+        SELECT '41101014'        , 94            , 340.54            FROM DUAL
+       ) S
+  LEFT JOIN REPASSE_IMAGEM_SW T
+    ON T.tuss = S.tuss
+   AND T.convenio = S.convenio
+ ORDER BY S.convenio, S.tuss;
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+MERGE INTO REPASSE_IMAGEM_SW T
+USING (
     SELECT '41101243' AS tuss, 48 AS convenio, 738.01 AS vl_total FROM DUAL UNION ALL
     SELECT '41101618'        , 15            , 450.85             FROM DUAL UNION ALL
     SELECT '41101227'        , 15            , 457.35             FROM DUAL UNION ALL
