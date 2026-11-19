@@ -1,0 +1,55 @@
+SELECT 
+    g.CD_GUIA,
+    g.NR_GUIA,
+    g.TP_GUIA,
+    CASE g.TP_GUIA 
+        WHEN 'I' THEN 'Internação' 
+        WHEN 'A' THEN 'Ambulatorial' 
+        WHEN 'O' THEN 'OPME' 
+        WHEN 'S' THEN 'SADT' 
+        WHEN 'H' THEN 'Home Care' 
+        WHEN 'U' THEN 'Urgência' 
+        WHEN 'C' THEN 'Cortesia' 
+        WHEN 'P' THEN 'Pré-Autorização' 
+        ELSE g.TP_GUIA 
+    END AS DS_TIPO_GUIA,
+    g.TP_SITUACAO,
+    CASE g.TP_SITUACAO 
+        WHEN 'S' THEN 'Solicitada' 
+        WHEN 'A' THEN 'Autorizada' 
+        WHEN 'N' THEN 'Negada' 
+        WHEN 'P' THEN 'Pendente' 
+        WHEN 'C' THEN 'Cancelada' 
+        WHEN 'E' THEN 'Em Negociação' 
+        WHEN 'R' THEN 'Pré-Autorizada' 
+        WHEN 'F' THEN 'Faturada' 
+        ELSE g.TP_SITUACAO 
+    END AS DS_SITUACAO,
+    g.DT_SOLICITACAO,
+    g.DT_AUTORIZACAO,
+    g.DT_VALIDADE,
+    g.NR_DIAS_SOLICITADOS,
+    g.NR_DIAS_AUTORIZADOS,
+    a.CD_ATENDIMENTO,
+    p.NM_PACIENTE,
+    c.NM_CONVENIO,
+    ta.DS_TIP_ACOM AS DS_ACOMODACAO,
+    g.CD_PRE_MED,
+    g.CD_AVISO_CIRURGIA,
+    g.SN_GUIA_AUTOMATICA,
+    g.TP_STATUS_OPME,
+    g.NM_USUARIO_RESP,
+    g.DT_GERACAO
+FROM 
+    DBAMV.GUIA g
+    LEFT JOIN DBAMV.ATENDIME a ON g.CD_ATENDIMENTO = a.CD_ATENDIMENTO
+    LEFT JOIN DBAMV.PACIENTE p ON a.CD_PACIENTE = p.CD_PACIENTE
+    LEFT JOIN DBAMV.CONVENIO c ON g.CD_CONVENIO = c.CD_CONVENIO
+    LEFT JOIN DBAMV.TIP_ACOM ta ON g.CD_TIP_ACOM = ta.CD_TIP_ACOM
+---WHERE 
+--    g.CD_MULTI_EMPRESA = 1  -- Obrigatório em ambientes multi-empresa
+  --  AND g.DT_SOLICITACAO BETWEEN TRUNC(SYSDATE) - 30 AND SYSDATE -- Últimos 30 dias (ajuste conforme necessidade)
+    -- AND g.TP_SITUACAO IN ('S', 'P', 'E') -- Ex: apenas pendentes/solicitadas
+ORDER BY 
+    g.DT_SOLICITACAO DESC,
+    g.CD_GUIA DESC;
