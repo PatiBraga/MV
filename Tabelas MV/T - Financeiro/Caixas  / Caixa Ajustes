@@ -1,0 +1,97 @@
+-- Ajustes caixa TESOURARIA
+
+SELECT * FROM doc_caixa WHERE cd_doc_caixa IN (10953,7644,12327);
+/
+UPDATE doc_caixa SET tp_status_doc = 'E' WHERE cd_doc_caixa IN ( 10953,7644,12327);
+
+------------------------------------------------------------------------------------------
+
+-- AJUSTE CAIXAA HEMODINAMICA
+
+SELECT * FROM doc_caixa WHERE nr_documento = '695541'
+/
+SELECT * FROM doc_caixa WHERE nr_documento = '820171'
+/
+SELECT * FROM doc_caixa WHERE nr_documento = 'KQCSEG'
+/
+
+ALTER TRIGGER DBAMV.TRG_MOV_CAIXA DISABLE;
+
+INSERT INTO DBAMV.MOV_CAIXA (
+    CD_MOV_CAIXA,
+    CD_LOTE_CAIXA,
+    DS_MOV_CAIXA,
+    DT_MOVIMENTACAO,
+    VL_MOVIMENTACAO,
+    DT_LANCAMENTO,
+    TP_ORIGEM_MOV,
+    TP_MOVIMENTACAO,
+    CD_MULTI_EMPRESA,
+    CD_PROCESSO,
+    CD_DOC_CAIXA
+)
+VALUES (
+    DBAMV.SEQ_MOV_CAIXA.NEXTVAL,
+    8977,
+    'AJUSTE SALDO',
+    TO_DATE('18/11/2026 23:59:59', 'DD/MM/YYYY HH24:MI:SS'),
+    12050,
+    TO_DATE('18/11/2026 23:59:59', 'DD/MM/YYYY HH24:MI:SS'),
+    'TR',
+    'E',
+    1,
+    275,
+    33042
+);
+
+ALTER TRIGGER DBAMV.TRG_MOV_CAIXA ENABLE;
+
+/
+UPDATE doc_caixa SET tp_status_doc = 'E' WHERE cd_doc_caixa IN ( 33042,35033,35040);
+/
+
+SELECT *  FROM mov_caixa WHERE cd_lote_caixa= 8977
+/
+
+UPDATE mov_caixa SET TP_ORIGEM_MOV = 'DE' WHERE cd_mov_caixa = 338930;
+/
+
+UPDATE mov_caixa SET  tp_movimentacao = 'S' WHERE cd_mov_caixa = 338930;
+/
+
+UPDATE mov_caixa SET dt_lancamento=  TO_DATE('18/11/2026 12:00:00', 'DD/MM/YYYY HH24:MI:SS') WHERE cd_mov_caixa = 338930;
+
+------------------------------------------------------------------------------------------------------------------------
+
+-- Query para realizar o insert
+
+ ALTER TRIGGER DBAMV.TRG_MOV_CAIXA DISABLE;
+
+INSERT INTO DBAMV.MOV_CAIXA (
+    CD_MOV_CAIXA,
+    CD_LOTE_CAIXA,
+    DS_MOV_CAIXA,
+    DT_MOVIMENTACAO,
+    VL_MOVIMENTACAO,
+    DT_LANCAMENTO,
+    TP_ORIGEM_MOV,
+    TP_MOVIMENTACAO,
+    CD_MULTI_EMPRESA,
+    CD_PROCESSO,
+    CD_DOC_CAIXA
+)
+VALUES (
+    DBAMV.SEQ_MOV_CAIXA.NEXTVAL,
+    8977,
+    'AJUSTE SALDO',
+    TO_DATE('18/11/2026 23:59:59', 'DD/MM/YYYY HH24:MI:SS'),
+    12050,
+    TO_DATE('18/11/2026 23:59:59', 'DD/MM/YYYY HH24:MI:SS'),
+    'TR',
+    'E',
+    1,
+    275,
+    33042
+);
+
+ALTER TRIGGER DBAMV.TRG_MOV_CAIXA ENABLE;
