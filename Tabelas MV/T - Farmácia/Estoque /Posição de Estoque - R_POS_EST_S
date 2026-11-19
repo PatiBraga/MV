@@ -28,3 +28,12 @@ And  ( (  = 'N' And Produto.Sn_Mestre = 'N')
           Or ( = 'S' And produto.Sn_Mestre = Produto.Sn_Mestre) )
 and   estoque.cd_multi_empresa = 
 1 And ( = '%' Or EST_PRO.CD_LOCALIZACAO = )
+
+GROUP BY
+                ESPECIE.CD_ESPECIE
+               ,ESPECIE.DS_ESPECIE
+               ,PRODUTO.CD_PRODUTO
+               ,PRODUTO.VL_CUSTO_MEDIO
+               ,PRODUTO.DS_PRODUTO
+)
+ORDER BY CD_ESPECIE , DS_PRODUTO , CD_PRODUTO
