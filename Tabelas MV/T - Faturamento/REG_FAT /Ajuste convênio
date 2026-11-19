@@ -1,0 +1,30 @@
+-- REG_FAT - alteração do convênio
+
+-- Validar o estado atual (pré-check):
+SELECT cd_reg_fat, cd_atendimento, cd_convenio
+FROM reg_fat
+WHERE cd_reg_fat = 112733 AND cd_atendimento = 1155457;
+/
+
+-- Validar o status das triggers (Oracle):
+SELECT trigger_name, table_name, status
+FROM all_triggers
+WHERE table_name = 'REG_FAT'
+   OR trigger_name = 'TRG_MVPEP_DOC_CONSISTE_FECHADO';
+/
+
+-- Se o bloqueio vier de TRG_MVPEP_DOC_CONSISTE_FECHADO, desabilite-a apenas durante a alteração:
+ALTER TRIGGER TRG_MVPEP_DOC_CONSISTE_FECHADO DISABLE;
+/
+
+-- Executar o UPDATE (sem aspas nos números):
+UPDATE reg_fat
+SET cd_convenio = 8
+WHERE cd_reg_fat = 112733
+  AND cd_atendimento = 1155457;
+
+-- Conferir SQL%ROWCOUNT ou a mensagem "1 row updated" e depois confirmar com COMMIT; (ou ROLLBACK;).
+-- Reabilitar a trigger e validar o status:
+
+ALTER TRIGGER TRG_MVPEP_DOC_CONSISTE_FECHADO ENABLE;
+
